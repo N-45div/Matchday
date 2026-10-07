@@ -44,3 +44,6 @@ next-env.d.ts
 # local agent notes written by next dev
 AGENTS.md
 CLAUDE.md
+
+# raw source data pulled by scripts (never committed)
+/data/raw/
