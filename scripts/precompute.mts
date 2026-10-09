@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { QlooClient } from "../src/lib/qloo/client";
 import { partnerQuery } from "../src/lib/partners/partners";
 
-interface Team { id: string; name: string; league: string; city: string; region: string | null; venue: string | null; lat: number | null; lng: number | null }
+interface Team { id: string; name: string; league: string; city: string; region: string | null; market: string; venue: string | null; lat: number | null; lng: number | null }
 
 const env = Object.fromEntries(
   readFileSync(".env.local", "utf8").split(/\r?\n/).filter((l) => l.includes("=")).map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]),
@@ -42,7 +42,7 @@ async function brandPool(extra: Record<string, unknown>, pages = 6) {
 async function precompute(team: Team) {
   const file = `${OUT}/${team.id}.json`;
   if (!force && existsSync(file)) return "cached";
-  const location = team.region ? `${team.city}, ${team.region}` : team.city;
+  const location = team.market;
   const hits = (await get<any>("/search", { query: team.name, types: "urn:entity:brand", take: 3 })).results ?? [];
   const teamEntity = hits.find((h: any) => norm(h.name) === norm(team.name)) ?? null;
   const city = await brandPool({ "signal.location.query": location });
@@ -50,6 +50,7 @@ async function precompute(team: Team) {
   const partners = team.lat != null && team.lng != null
     ? ((await get<any>("/v2/insights", partnerQuery({ lat: team.lat, lng: team.lng }, teamEntity?.entity_id))).results?.entities ?? []).map(slimPlace)
     : [];
+  if (!city.length) console.log(`  warning: no brands for "${location}"; add a market override in scripts/teams-baseball.mjs`);
   writeFileSync(file, JSON.stringify({ team: team.id, location, teamEntityId: teamEntity?.entity_id ?? null, fetchedAt: new Date().toISOString(), city, teamCity, partners }));
   return `city ${city.length}, fans ${teamCity.length}, partners ${partners.length}`;
 }

@@ -4,6 +4,13 @@ import { mkdirSync, writeFileSync } from "node:fs";
 
 const season = process.argv[2] ?? "2026";
 const LEVEL = { 1: "MLB", 11: "Triple-A", 12: "Double-A", 13: "High-A", 14: "Single-A" };
+// Ballpark towns Qloo resolves to a neighbourhood or a locality with no data; use the surrounding market instead.
+const MARKET = {
+  "New York Mets": "Queens, New York",
+  "Bradenton Marauders": "Sarasota, Florida",
+};
+// Qloo matches "St." to neighbourhood names (e.g. Euclid-St. Paul); "Saint" resolves to the city.
+const marketOf = (name, city, region) => MARKET[name] ?? `${city.replace(/^St\.? /, "Saint ")}${region ? `, ${region}` : ""}`;
 const url = `https://statsapi.mlb.com/api/v1/teams?sportIds=1,11,12,13,14&season=${season}&hydrate=venue(location)`;
 
 const res = await fetch(url);
@@ -19,6 +26,7 @@ const rows = teams
       league: LEVEL[t.sport.id],
       city: loc.city ?? t.locationName,
       region: loc.state ?? null,
+      market: marketOf(t.name, loc.city ?? t.locationName, loc.state ?? null),
       country: loc.country ?? null,
       venue: t.venue?.name ?? null,
       lat: loc.defaultCoordinates?.latitude ?? null,
