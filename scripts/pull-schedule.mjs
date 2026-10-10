@@ -18,7 +18,9 @@ for (const sportId of SPORTS) {
     const body = await res.json();
     for (const d of body.dates ?? []) {
       for (const g of d.games ?? []) {
-        games.push({ gamePk: g.gamePk, sportId, date: d.date, start: g.gameDate ?? null, dayNight: g.dayNight ?? null, doubleHeader: g.doubleHeader ?? "N", homeId: g.teams?.home?.team?.id, awayId: g.teams?.away?.team?.id });
+        // Next season's start times are placeholders ("startTimeTBD") until clubs set them, so day/night is unknown.
+        const tbd = g.status?.startTimeTBD === true;
+        games.push({ gamePk: g.gamePk, sportId, date: d.date, start: tbd ? null : g.gameDate ?? null, dayNight: tbd ? null : g.dayNight ?? null, doubleHeader: g.doubleHeader ?? "N", homeId: g.teams?.home?.team?.id, awayId: g.teams?.away?.team?.id });
       }
     }
     await sleep(1000);
