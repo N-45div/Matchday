@@ -141,6 +141,9 @@ def main() -> None:
         for r in grouped.itertuples(index=False):
             club = baselines.setdefault(f"mlb-{r.club}", {}).setdefault(r.season, {"weekday": {}, "month": {}})
             club[key][getattr(r, key)] = {"mean": int(r.mean), "games": int(r.count)}
+    # A practical ceiling for planning: the club's 95th-percentile crowd that season (all games).
+    for (club_id, season), att in games.groupby(["club", "season"])["attendance"]:
+        baselines.setdefault(f"mlb-{club_id}", {}).setdefault(season, {"weekday": {}, "month": {}})["p95"] = int(att.quantile(0.95))
     out = ROOT / "data/lift"
     out.mkdir(parents=True, exist_ok=True)
     (out / "lift.json").write_text(compact_json(result, inline_depth=3) + "\n", encoding="utf-8")
