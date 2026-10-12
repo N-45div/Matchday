@@ -45,3 +45,12 @@ This file is committed before the evaluation scripts run, so the method can't dr
 - **Success:** the Desk ranking beats both LLM-only and placebo in the top 300, with an interval for the difference that excludes zero.
 - **Reported as:** found / labelled, per ranker, with intervals. The share of real sponsors Qloo cannot resolve at all (local services, banks, dealers) is stated next to it.
 - **Does not establish:** that a suggested brand would sign. Labels show who bought, not who should.
+
+## Amendment (Oct 13 2026, before any sponsor-fit result was computed)
+
+Resolving 300 LLM-proposed names per club through Qloo search would take about 33,000 rate-limited calls, which isn't feasible. So the sponsor-fit test adds a second scoring method, applied identically to every ranker:
+
+- **Name match:** a ranked brand counts as a hit if its name matches one of the club's 2026 presenter names under the same name-similarity guard used for label resolution. The rankers are Qloo's ranked entity names and the LLM's ranked names.
+- **ID match** (as originally planned) is still reported for the Qloo rankers 1, 2, 3, 5 and 6.
+- The LLM-only comparison uses the name match only.
+- **Known bias, stated up front:** an LLM may recall published sponsor relationships from its training data. That favours the LLM arm, so a Desk win over it is conservative.
