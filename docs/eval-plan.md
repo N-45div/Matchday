@@ -54,3 +54,18 @@ Resolving 300 LLM-proposed names per club through Qloo search would take about 3
 - **ID match** (as originally planned) is still reported for the Qloo rankers 1, 2, 3, 5 and 6.
 - The LLM-only comparison uses the name match only.
 - **Known bias, stated up front:** an LLM may recall published sponsor relationships from its training data. That favours the LLM arm, so a Desk win over it is conservative.
+
+## Amendment 2 (Oct 13 2026, after the 2026 result, before any 2025 result)
+
+The pre-registered 2026 test came out as follows:
+- The Desk ranking beat the placebo.
+- It **lost** to the LLM alone (name match, top 300: 136 vs 248).
+
+An exploratory look at the same 2026 data showed the two find different sponsors: 85 of the Desk's 136 hits were missed by the LLM. That suggests a hybrid. Because the idea came from the 2026 data, it's tested here on a separate label set:
+
+- **Labels:** each club's **2025** promotion presenters (same splitting and name guard).
+- **Hybrid ranker:** the LLM's top 150 names followed by the Desk ranking's top 150 names, de-duplicated by name. That makes 300 names, the same length as the LLM-only list.
+- **Test:** hybrid vs LLM-only top 300, name match, 2,000 bootstrap resamples of clubs.
+- **Success:** hybrid finds more 2025 sponsors, with a 95% interval for the difference that excludes zero.
+- **Caveat stated up front:** many sponsors renew year to year, so 2025 labels overlap with 2026. This is a replication on a second season, not a fully independent sample.
+- The LLM lists are the same cached responses used for 2026 (the prompt doesn't depend on season).
