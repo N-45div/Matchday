@@ -27,7 +27,9 @@ const GUARD = 0.6;
 // ---------- labels ----------
 interface Team { id: string; name: string; league: string; market: string }
 const teams: Team[] = JSON.parse(readFileSync("data/teams/baseball.json", "utf8")).teams;
-const games = JSON.parse(readFileSync("data/raw/games-2026.json", "utf8")) as { homeId: number; promos: { presentedBy: string | null }[] }[];
+// LABEL_SEASON picks whose presenters count as labels (2026 = the pre-registered test, 2025 = amendment 2).
+const SEASON = process.env.LABEL_SEASON ?? "2026";
+const games = JSON.parse(readFileSync(`data/raw/games-${SEASON}.json`, "utf8")) as { homeId: number; promos: { presentedBy: string | null }[] }[];
 const presenters = new Map<string, Set<string>>();
 for (const g of games) {
   for (const p of g.promos) {
@@ -107,7 +109,7 @@ const llm = new Map<string, Ranked>();
 await pool(evalTeams, 4, async (t) => { llm.set(t.id, await llmBrands(t)); });
 
 // ---------- scoring ----------
-const RANKERS = (["city", "fans", "desk", "llm", "placebo", "national"] as const).filter((r) => r !== "national" || national);
+const RANKERS = (["city", "fans", "desk", "llm", "hybrid", "placebo", "national"] as const).filter((r) => r !== "national" || national);
 type Row = { club: string; league: string; labels: number; resolved: number } & Record<string, number>;
 const rows: Row[] = [];
 evalTeams.forEach((t, i) => {
@@ -120,9 +122,13 @@ evalTeams.forEach((t, i) => {
     fans,
     desk: fans.length ? fuse(city, fans) : city,
     llm: llm.get(t.id) ?? [],
+    hybrid: [],
     placebo: other.city.map((e: any) => ({ id: e.entity_id, name: e.name })),
     national: national ?? [],
   };
+  // Hybrid (amendment 2): the LLM's top 150 then the Desk ranking's top 150, de-duplicated by name.
+  const seen = new Set<string>();
+  lists.hybrid = [...lists.llm.slice(0, 150), ...lists.desk.slice(0, 150)].filter((x) => { const k = toks(x.name).join(" "); if (seen.has(k)) return false; seen.add(k); return true; });
   const labelNames = [...presenters.get(t.id)!];
   const labelIds = new Set(labelNames.map((s) => resolved[s]?.id).filter(Boolean) as string[]);
   const row: Row = { club: t.name, league: t.league, labels: labelNames.length, resolved: labelIds.size } as Row;
@@ -130,7 +136,7 @@ evalTeams.forEach((t, i) => {
     for (const k of [100, 300]) {
       const top = lists[r].slice(0, k);
       row[`${r}_name${k}`] = labelNames.filter((l) => top.some((x) => sim(l, x.name) >= GUARD)).length;
-      if (r !== "llm" && !OFFLINE) row[`${r}_id${k}`] = top.filter((x) => x.id && labelIds.has(x.id)).length;
+      if (r !== "llm" && r !== "hybrid" && !OFFLINE) row[`${r}_id${k}`] = top.filter((x) => x.id && labelIds.has(x.id)).length;
     }
   }
   rows.push(row);
@@ -142,7 +148,7 @@ const rand = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 2 ** 32);
 const sumOf = (rs: Row[], k: string) => rs.reduce((a, r) => a + (r[k] ?? 0), 0);
 const ci = (vals: number[]) => { const s = [...vals].sort((a, b) => a - b); return [s[Math.floor(0.025 * s.length)], s[Math.floor(0.975 * s.length)]]; };
 const keys = Object.keys(rows[0]).filter((k) => /_(name|id)\d+$/.test(k));
-const diffs = [["desk_name300", "llm_name300"], ["desk_name300", "placebo_name300"], ["desk_name100", "llm_name100"], ...(OFFLINE ? [] : [["desk_id300", "placebo_id300"]])];
+const diffs = [["hybrid_name300", "llm_name300"], ["desk_name300", "llm_name300"], ["desk_name300", "placebo_name300"], ["desk_name100", "llm_name100"], ...(OFFLINE ? [] : [["desk_id300", "placebo_id300"]])];
 const boots: Record<string, number[]> = Object.fromEntries([...keys, ...diffs.map(([a, b]) => `${a}-${b}`)].map((k) => [k, []]));
 for (let b = 0; b < 2000; b++) {
   const sample = rows.map(() => rows[Math.floor(rand() * rows.length)]);
@@ -154,6 +160,7 @@ const differences = Object.fromEntries(diffs.map(([a, c]) => [`${a} minus ${c}`,
 const labelCount = sumOf(rows, "labels");
 const resolvedCount = sumOf(rows, "resolved");
 const out = {
+  labelSeason: SEASON,
   clubs: rows.length,
   labels: labelCount,
   labelsResolvedToQloo: OFFLINE ? null : resolvedCount,
@@ -164,5 +171,5 @@ const out = {
   differences,
   perClub: rows,
 };
-writeFileSync("data/eval/sponsor-fit.json", JSON.stringify(out, null, 1).replace(/\n\s+(?=[\d\]"-])/g, " "));
+writeFileSync(SEASON === "2026" ? "data/eval/sponsor-fit.json" : `data/eval/sponsor-fit-${SEASON}.json`, JSON.stringify(out, null, 1).replace(/\n\s+(?=[\d\]"-])/g, " "));
 console.log(JSON.stringify({ clubs: out.clubs, labels: labelCount, resolved: resolvedCount, totals: Object.fromEntries(Object.entries(totals).map(([k, v]) => [k, v.found])), differences }, null, 1));
