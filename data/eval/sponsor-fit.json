@@ -1,0 +1,245 @@
+{ "clubs": 114, "labels": 3065, "labelsResolvedToQloo": null, "resolutionRate": null, "offline": "Qloo key quota spent: ID-match scoring and the national ranker are pending", "model": "anthropic/claude-haiku-5.5 (LLM-only arm)", "totals": { "city_name100": { "found": 78, "ci95": [ 60, 98 ]
+  }, "city_name300": { "found": 130, "ci95": [ 108, 155 ]
+  }, "fans_name100": { "found": 38, "ci95": [ 25, 54 ]
+  }, "fans_name300": { "found": 81, "ci95": [ 57, 109 ]
+  }, "desk_name100": { "found": 86, "ci95": [ 65, 110 ]
+  }, "desk_name300": { "found": 136, "ci95": [ 113, 163 ]
+  }, "llm_name100": { "found": 190, "ci95": [ 152, 231 ]
+  }, "llm_name300": { "found": 248, "ci95": [ 202, 300 ]
+  }, "placebo_name100": { "found": 11, "ci95": [ 6, 18 ]
+  }, "placebo_name300": { "found": 31, "ci95": [ 19, 44 ]
+  }
+ }, "differences": { "desk_name300 minus llm_name300": { "value": -112, "ci95": [ -158, -66 ]
+  }, "desk_name300 minus placebo_name300": { "value": 105, "ci95": [ 82, 131 ]
+  }, "desk_name100 minus llm_name100": { "value": -104, "ci95": [ -144, -65 ]
+  }
+ }, "perClub": [
+  { "club": "Athletics", "league": "MLB", "labels": 15, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Atlanta Braves", "league": "MLB", "labels": 17, "resolved": 0, "city_name100": 1, "city_name300": 2, "fans_name100": 1, "fans_name300": 4, "desk_name100": 2, "desk_name300": 4, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Baltimore Orioles", "league": "MLB", "labels": 24, "resolved": 0, "city_name100": 1, "city_name300": 3, "fans_name100": 1, "fans_name300": 4, "desk_name100": 1, "desk_name300": 3, "llm_name100": 3, "llm_name300": 5, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Boston Red Sox", "league": "MLB", "labels": 9, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Chicago Cubs", "league": "MLB", "labels": 17, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Chicago White Sox", "league": "MLB", "labels": 28, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 1, "fans_name300": 4, "desk_name100": 0, "desk_name300": 3, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Cincinnati Reds", "league": "MLB", "labels": 27, "resolved": 0, "city_name100": 3, "city_name300": 3, "fans_name100": 2, "fans_name300": 4, "desk_name100": 3, "desk_name300": 3, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Colorado Rockies", "league": "MLB", "labels": 13, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 2, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Detroit Tigers", "league": "MLB", "labels": 12, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 2, "desk_name100": 0, "desk_name300": 1, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Houston Astros", "league": "MLB", "labels": 36, "resolved": 0, "city_name100": 1, "city_name300": 3, "fans_name100": 3, "fans_name300": 5, "desk_name100": 4, "desk_name300": 4, "llm_name100": 2, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Kansas City Royals", "league": "MLB", "labels": 15, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 3, "llm_name300": 4, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Los Angeles Angels", "league": "MLB", "labels": 24, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Los Angeles Dodgers", "league": "MLB", "labels": 34, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 1, "fans_name300": 2, "desk_name100": 0, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Milwaukee Brewers", "league": "MLB", "labels": 21, "resolved": 0, "city_name100": 1, "city_name300": 3, "fans_name100": 0, "fans_name300": 2, "desk_name100": 1, "desk_name300": 3, "llm_name100": 6, "llm_name300": 6, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Minnesota Twins", "league": "MLB", "labels": 17, "resolved": 0, "city_name100": 2, "city_name300": 3, "fans_name100": 1, "fans_name300": 3, "desk_name100": 3, "desk_name300": 3, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "New York Mets", "league": "MLB", "labels": 26, "resolved": 0, "city_name100": 2, "city_name300": 3, "fans_name100": 2, "fans_name300": 2, "desk_name100": 2, "desk_name300": 3, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 1, "placebo_name300": 3
+  },
+  { "club": "New York Yankees", "league": "MLB", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 3, "fans_name100": 0, "fans_name300": 1, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Pittsburgh Pirates", "league": "MLB", "labels": 2, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "San Diego Padres", "league": "MLB", "labels": 32, "resolved": 0, "city_name100": 2, "city_name300": 2, "fans_name100": 3, "fans_name300": 4, "desk_name100": 1, "desk_name300": 4, "llm_name100": 4, "llm_name300": 4, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "San Francisco Giants", "league": "MLB", "labels": 25, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 1, "fans_name300": 1, "desk_name100": 0, "desk_name300": 1, "llm_name100": 1, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Seattle Mariners", "league": "MLB", "labels": 25, "resolved": 0, "city_name100": 2, "city_name300": 4, "fans_name100": 2, "fans_name300": 4, "desk_name100": 4, "desk_name300": 4, "llm_name100": 2, "llm_name300": 4, "placebo_name100": 1, "placebo_name300": 3
+  },
+  { "club": "St. Louis Cardinals", "league": "MLB", "labels": 35, "resolved": 0, "city_name100": 3, "city_name300": 3, "fans_name100": 2, "fans_name300": 3, "desk_name100": 3, "desk_name300": 3, "llm_name100": 8, "llm_name300": 10, "placebo_name100": 1, "placebo_name300": 2
+  },
+  { "club": "Tampa Bay Rays", "league": "MLB", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 1, "desk_name100": 0, "desk_name300": 0, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Texas Rangers", "league": "MLB", "labels": 33, "resolved": 0, "city_name100": 3, "city_name300": 3, "fans_name100": 0, "fans_name300": 4, "desk_name100": 3, "desk_name300": 3, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Washington Nationals", "league": "MLB", "labels": 2, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Buffalo Bisons", "league": "Triple-A", "labels": 49, "resolved": 0, "city_name100": 0, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 2, "llm_name100": 1, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Charlotte Knights", "league": "Triple-A", "labels": 7, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Durham Bulls", "league": "Triple-A", "labels": 3, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "El Paso Chihuahuas", "league": "Triple-A", "labels": 14, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Gwinnett Stripers", "league": "Triple-A", "labels": 16, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Indianapolis Indians", "league": "Triple-A", "labels": 34, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 1, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Iowa Cubs", "league": "Triple-A", "labels": 33, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Jacksonville Jumbo Shrimp", "league": "Triple-A", "labels": 69, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 8, "llm_name300": 8, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Lehigh Valley IronPigs", "league": "Triple-A", "labels": 51, "resolved": 0, "city_name100": 2, "city_name300": 2, "fans_name100": 2, "fans_name300": 2, "desk_name100": 2, "desk_name300": 2, "llm_name100": 2, "llm_name300": 5, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Louisville Bats", "league": "Triple-A", "labels": 73, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 1, "fans_name300": 1, "desk_name100": 0, "desk_name300": 1, "llm_name100": 6, "llm_name300": 6, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Memphis Redbirds", "league": "Triple-A", "labels": 23, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 1, "desk_name100": 0, "desk_name300": 2, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Nashville Sounds", "league": "Triple-A", "labels": 26, "resolved": 0, "city_name100": 0, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 2, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 2
+  },
+  { "club": "Norfolk Tides", "league": "Triple-A", "labels": 42, "resolved": 0, "city_name100": 2, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 2, "desk_name300": 2, "llm_name100": 6, "llm_name300": 6, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Omaha Storm Chasers", "league": "Triple-A", "labels": 35, "resolved": 0, "city_name100": 1, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 2, "llm_name100": 3, "llm_name300": 5, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Reno Aces", "league": "Triple-A", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Rochester Red Wings", "league": "Triple-A", "labels": 62, "resolved": 0, "city_name100": 1, "city_name300": 3, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 3, "llm_name100": 5, "llm_name300": 5, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Round Rock Express", "league": "Triple-A", "labels": 20, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 3, "llm_name300": 4, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Scranton/Wilkes-Barre RailRiders", "league": "Triple-A", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Sugar Land Space Cowboys", "league": "Triple-A", "labels": 36, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Syracuse Mets", "league": "Triple-A", "labels": 43, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 2, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Toledo Mud Hens", "league": "Triple-A", "labels": 28, "resolved": 0, "city_name100": 1, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 2, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Akron RubberDucks", "league": "Double-A", "labels": 43, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 1, "fans_name300": 1, "desk_name100": 0, "desk_name300": 1, "llm_name100": 3, "llm_name300": 4, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Altoona Curve", "league": "Double-A", "labels": 89, "resolved": 0, "city_name100": 0, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 2, "llm_name100": 6, "llm_name300": 7, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Amarillo Sod Poodles", "league": "Double-A", "labels": 31, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Arkansas Travelers", "league": "Double-A", "labels": 37, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Binghamton Rumble Ponies", "league": "Double-A", "labels": 53, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Birmingham Barons", "league": "Double-A", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 4, "llm_name300": 4, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Chattanooga Lookouts", "league": "Double-A", "labels": 35, "resolved": 0, "city_name100": 1, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 5, "llm_name300": 6, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Chesapeake Baysox", "league": "Double-A", "labels": 21, "resolved": 0, "city_name100": 0, "city_name300": 3, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 3, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Columbus Clingstones", "league": "Double-A", "labels": 42, "resolved": 0, "city_name100": 2, "city_name300": 3, "fans_name100": 0, "fans_name300": 0, "desk_name100": 2, "desk_name300": 3, "llm_name100": 3, "llm_name300": 6, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Corpus Christi Hooks", "league": "Double-A", "labels": 30, "resolved": 0, "city_name100": 5, "city_name300": 5, "fans_name100": 2, "fans_name300": 2, "desk_name100": 5, "desk_name300": 5, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Erie SeaWolves", "league": "Double-A", "labels": 24, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Harrisburg Senators", "league": "Double-A", "labels": 39, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 1, "fans_name300": 2, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Knoxville Smokies", "league": "Double-A", "labels": 27, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Midland RockHounds", "league": "Double-A", "labels": 17, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "New Hampshire Fisher Cats", "league": "Double-A", "labels": 30, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Northwest Arkansas Naturals", "league": "Double-A", "labels": 47, "resolved": 0, "city_name100": 3, "city_name300": 5, "fans_name100": 1, "fans_name300": 4, "desk_name100": 4, "desk_name300": 5, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Pensacola Blue Wahoos", "league": "Double-A", "labels": 24, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Portland Sea Dogs", "league": "Double-A", "labels": 49, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 5, "llm_name300": 7, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Richmond Flying Squirrels", "league": "Double-A", "labels": 27, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 3, "llm_name300": 4, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Rocket City Trash Pandas", "league": "Double-A", "labels": 29, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 1, "fans_name300": 1, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Somerset Patriots", "league": "Double-A", "labels": 48, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Tulsa Drillers", "league": "Double-A", "labels": 66, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Wichita Wind Surge", "league": "Double-A", "labels": 25, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Bowling Green Hot Rods", "league": "High-A", "labels": 1, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Brooklyn Cyclones", "league": "High-A", "labels": 1, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Cedar Rapids Kernels", "league": "High-A", "labels": 5, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Everett AquaSox", "league": "High-A", "labels": 31, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Fort Wayne TinCaps", "league": "High-A", "labels": 35, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Frederick Keys", "league": "High-A", "labels": 41, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Great Lakes Loons", "league": "High-A", "labels": 35, "resolved": 0, "city_name100": 2, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 2, "desk_name300": 2, "llm_name100": 2, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Greensboro Grasshoppers", "league": "High-A", "labels": 20, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 3, "llm_name300": 5, "placebo_name100": 1, "placebo_name300": 1
+  },
+  { "club": "Greenville Drive", "league": "High-A", "labels": 25, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 4, "llm_name300": 4, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Hillsboro Hops", "league": "High-A", "labels": 13, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Jersey Shore BlueClaws", "league": "High-A", "labels": 24, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 3, "llm_name300": 5, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Lake County Captains", "league": "High-A", "labels": 16, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Lansing Lugnuts", "league": "High-A", "labels": 9, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Peoria Chiefs", "league": "High-A", "labels": 21, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Rome Emperors", "league": "High-A", "labels": 9, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "South Bend Cubs", "league": "High-A", "labels": 42, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 4, "llm_name300": 8, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Spokane Indians", "league": "High-A", "labels": 70, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Tri-City Dust Devils", "league": "High-A", "labels": 12, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Vancouver Canadians", "league": "High-A", "labels": 15, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "West Michigan Whitecaps", "league": "High-A", "labels": 41, "resolved": 0, "city_name100": 3, "city_name300": 4, "fans_name100": 0, "fans_name300": 0, "desk_name100": 3, "desk_name300": 4, "llm_name100": 9, "llm_name300": 12, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Wilmington Blue Rocks", "league": "High-A", "labels": 36, "resolved": 0, "city_name100": 2, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 2, "desk_name300": 2, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Wisconsin Timber Rattlers", "league": "High-A", "labels": 4, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Augusta GreenJackets", "league": "Single-A", "labels": 48, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 3, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Charleston RiverDogs", "league": "Single-A", "labels": 7, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Clearwater Threshers", "league": "Single-A", "labels": 24, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Columbia Fireflies", "league": "Single-A", "labels": 28, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Daytona Tortugas", "league": "Single-A", "labels": 12, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Delmarva Shorebirds", "league": "Single-A", "labels": 31, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Fayetteville Woodpeckers", "league": "Single-A", "labels": 15, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "Fort Myers Mighty Mussels", "league": "Single-A", "labels": 16, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Fredericksburg Nationals", "league": "Single-A", "labels": 37, "resolved": 0, "city_name100": 0, "city_name300": 2, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 2, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Fresno Grizzlies", "league": "Single-A", "labels": 26, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 2, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Hickory Crawdads", "league": "Single-A", "labels": 51, "resolved": 0, "city_name100": 2, "city_name300": 3, "fans_name100": 2, "fans_name300": 3, "desk_name100": 3, "desk_name300": 3, "llm_name100": 3, "llm_name300": 3, "placebo_name100": 1, "placebo_name300": 2
+  },
+  { "club": "Hill City Howlers", "league": "Single-A", "labels": 37, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 1, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Inland Empire 66ers", "league": "Single-A", "labels": 7, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Kannapolis Cannon Ballers", "league": "Single-A", "labels": 16, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 1, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Lakeland Flying Tigers", "league": "Single-A", "labels": 3, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Ontario Tower Buzzers", "league": "Single-A", "labels": 13, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Rancho Cucamonga Quakes", "league": "Single-A", "labels": 19, "resolved": 0, "city_name100": 0, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Salem RidgeYaks", "league": "Single-A", "labels": 16, "resolved": 0, "city_name100": 1, "city_name300": 1, "fans_name100": 0, "fans_name300": 0, "desk_name100": 1, "desk_name300": 1, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 1
+  },
+  { "club": "San Jose Giants", "league": "Single-A", "labels": 22, "resolved": 0, "city_name100": 1, "city_name300": 2, "fans_name100": 2, "fans_name300": 2, "desk_name100": 2, "desk_name300": 2, "llm_name100": 0, "llm_name300": 2, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "St. Lucie Mets", "league": "Single-A", "labels": 6, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Stockton Ports", "league": "Single-A", "labels": 33, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 1, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Tampa Tarpons", "league": "Single-A", "labels": 3, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  },
+  { "club": "Wilson Warbirds", "league": "Single-A", "labels": 8, "resolved": 0, "city_name100": 0, "city_name300": 0, "fans_name100": 0, "fans_name300": 0, "desk_name100": 0, "desk_name300": 0, "llm_name100": 0, "llm_name300": 0, "placebo_name100": 0, "placebo_name300": 0
+  } ]
+}
