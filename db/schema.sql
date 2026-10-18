@@ -29,3 +29,17 @@ create table if not exists home_dates (
   day_night text,
   primary key (club_id, date)
 );
+
+-- The LLM half of the sponsor board: local consumer businesses an assistant can name (scripts/ai-prospects.mts).
+create table if not exists club_ai_prospects (
+  club_id text primary key references clubs(id) on delete cascade,
+  model text not null,
+  names jsonb not null,
+  created_at timestamptz not null default now()
+);
+
+-- Each brand's median rank across every club city's Qloo brand pool, for "stronger here than in a typical club city".
+create table if not exists brand_city_median (
+  entity_id text primary key,
+  median_rank integer not null
+);

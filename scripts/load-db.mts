@@ -30,6 +30,31 @@ for (const t of teams) {
   }
 }
 
+// LLM prospect lists (the half of the hybrid an assistant supplies).
+let prospects = 0;
+for (const t of teams) {
+  const file = `data/cache/prospects/${t.id}.json`;
+  if (!existsSync(file)) continue;
+  const names = (JSON.parse(readFileSync(file, "utf8")) as { name: string }[]).map((x) => x.name);
+  await sql`insert into club_ai_prospects (club_id, model, names) values (${t.id}, ${"anthropic/claude-haiku-5.5"}, ${JSON.stringify(names)})
+    on conflict (club_id) do update set model = excluded.model, names = excluded.names, created_at = now()`;
+  prospects++;
+}
+
+// Median rank of every brand across all club-city pools (missing from a pool counts as rank 300).
+const pools = teams.map((t) => `data/cache/clubs/${t.id}.json`).filter((f) => existsSync(f)).map((f) => (JSON.parse(readFileSync(f, "utf8")).city as { entity_id: string }[]).map((b) => b.entity_id));
+const ranks = new Map<string, number[]>();
+pools.forEach((pool, i) => pool.forEach((id, r) => {
+  if (!ranks.has(id)) ranks.set(id, new Array(pools.length).fill(300));
+  ranks.get(id)![i] = r;
+}));
+const medians = [...ranks.entries()].map(([id, list]) => [id, [...list].sort((a, b) => a - b)[Math.floor(list.length / 2)]] as const);
+await sql`delete from brand_city_median`;
+for (let i = 0; i < medians.length; i += 1000) {
+  const chunk = medians.slice(i, i + 1000);
+  await sql`insert into brand_city_median (entity_id, median_rank) select * from unnest(${chunk.map((m) => m[0])}::text[], ${chunk.map((m) => m[1])}::int[])`;
+}
+
 const scheduleFile = `data/raw/schedule-${season}.json`;
 let dates = 0;
 if (existsSync(scheduleFile)) {
@@ -47,4 +72,4 @@ if (existsSync(scheduleFile)) {
     dates += unique.length;
   }
 }
-console.log(`clubs ${teams.length}, cached Qloo data ${cached}, ${season} home dates ${dates}`);
+console.log(`clubs ${teams.length}, cached Qloo data ${cached}, prospect lists ${prospects}, brand medians ${medians.length}, ${season} home dates ${dates}`);
