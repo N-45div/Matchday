@@ -34,6 +34,16 @@ const KEYWORDS: [Restriction, RegExp][] = [
   ["firearms", /\b(firearms?|guns?|ammunition|smith & wesson|glock|nra)\b/i],
 ];
 
+const ALCOHOL_NAME = /\b(brew(ing|ery|house|pub)?|beer|ale|lager|distill(ery|ing)?|spirits|vodka|whiskey|whisky|bourbon|tequila|rum|gin|wine(ry|s)?|vineyards?|cider(y)?|seltzer|liquor|tavern|taproom)\b/i;
+
+/** Restrictions readable from a name alone (assistant-suggested businesses carry no Qloo tags). */
+export function nameRestrictions(name: string): Restriction[] {
+  const out = new Set<Restriction>();
+  if (ALCOHOL_NAME.test(name)) out.add("alcohol");
+  for (const [restriction, re] of KEYWORDS) if (re.test(name)) out.add(restriction);
+  return [...out];
+}
+
 export function profile(brand: QlooBrand): BrandProfile {
   const ids = tagIds(brand);
   const genres = ids.filter((t) => t.startsWith("urn:tag:genre:brand:")).map((t) => t.slice("urn:tag:genre:brand:".length));
