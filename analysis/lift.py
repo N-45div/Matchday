@@ -144,10 +144,19 @@ def main() -> None:
     # A practical ceiling for planning: the club's 95th-percentile crowd that season (all games).
     for (club_id, season), att in games.groupby(["club", "season"])["attendance"]:
         baselines.setdefault(f"mlb-{club_id}", {}).setdefault(season, {"weekday": {}, "month": {}})["p95"] = int(att.quantile(0.95))
+    # Each club's own latest-season placement: how many nights of each promotion fell on each weekday.
+    # The planner compares its calendar with this, not with a straw man.
+    latest = games[games["season"] == games["season"].max()]
+    mix = {}
+    for kind in ["fireworks", "bobblehead", "giveaway", "theme"]:
+        counts = latest[latest[kind] == 1].groupby(["club", "weekday"]).size()
+        for (club_id, weekday), n in counts.items():
+            mix.setdefault(f"mlb-{club_id}", {}).setdefault(kind, {})[weekday] = int(n)
     out = ROOT / "data/lift"
     out.mkdir(parents=True, exist_ok=True)
     (out / "lift.json").write_text(compact_json(result, inline_depth=3) + "\n", encoding="utf-8")
     (out / "baselines.json").write_text(compact_json(baselines, inline_depth=1) + "\n", encoding="utf-8")
+    (out / "promo-mix.json").write_text(compact_json({"season": str(latest["season"].iloc[0]), "clubs": mix}, inline_depth=2) + "\n", encoding="utf-8")
 
 
 def compact_json(obj, inline_depth: int, depth: int = 0) -> str:
