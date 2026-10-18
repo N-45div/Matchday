@@ -34,7 +34,12 @@ export interface SeasonPlan {
   addedFans: number;
   /** Fans added by the same promotions placed the common way (biggest crowds first). */
   conventionalAddedFans: number;
+  /** Fans added by the same promotions spread over weekdays the way the club did last season, if known. */
+  clubMixAddedFans: number | null;
 }
+
+/** Last season's nights per promotion per weekday, e.g. { fireworks: { Friday: 10, Saturday: 10 } }. */
+export type PromoMix = Partial<Record<Exclude<PromoKind, "opening">, Record<string, number>>>;
 
 export type Budget = Partial<Record<Exclude<PromoKind, "opening">, number>>;
 
@@ -80,7 +85,18 @@ function place(entries: PlanEntry[], budget: Budget, lifts: Lifts, cap: number |
   }
 }
 
-export function planSeason(dates: HomeDate[], baseline: ClubBaseline, lifts: Lifts, budget: Budget, nightOnly: { fireworks: boolean } = { fireworks: true }): SeasonPlan {
+/** Splits n nights across weekdays in proportion to last season's mix (largest remainder). */
+export function weekdayTargets(n: number, mix: Record<string, number>): Record<string, number> {
+  const total = Object.values(mix).reduce((s, v) => s + v, 0);
+  if (!total || n <= 0) return {};
+  const raw = Object.entries(mix).map(([day, v]) => ({ day, exact: (n * v) / total }));
+  const out = Object.fromEntries(raw.map((r) => [r.day, Math.floor(r.exact)]));
+  let left = n - Object.values(out).reduce((s, v) => s + v, 0);
+  for (const r of [...raw].sort((a, b) => (b.exact % 1) - (a.exact % 1))) if (left-- > 0) out[r.day]++;
+  return out;
+}
+
+export function planSeason(dates: HomeDate[], baseline: ClubBaseline, lifts: Lifts, budget: Budget, nightOnly: { fireworks: boolean } = { fireworks: true }, clubMix?: PromoMix): SeasonPlan {
   const fresh = (): PlanEntry[] =>
     [...dates]
       .sort((a, b) => a.date.localeCompare(b.date))
@@ -116,5 +132,22 @@ export function planSeason(dates: HomeDate[], baseline: ClubBaseline, lifts: Lif
   place(conventional, budget, lifts, baseline.p95, (c, kind) => c.filter((e) => eligible(e, kind)).sort((a, b) => b.baseline - a.baseline || a.date.localeCompare(b.date)));
 
   const total = (list: PlanEntry[]) => list.reduce((s, e) => s + e.addedFans, 0);
-  return { entries, addedFans: total(entries), conventionalAddedFans: total(conventional) };
+
+  // The club's own way: the same nights, on the weekdays the club used last season, spread evenly through the season.
+  let clubMixAddedFans: number | null = null;
+  if (clubMix && Object.keys(clubMix).length) {
+    const mine = fresh();
+    open(mine);
+    place(mine, budget, lifts, baseline.p95, (c, kind) => {
+      const targets = weekdayTargets(budget[kind] ?? 0, clubMix[kind] ?? {});
+      const order: PlanEntry[] = [];
+      for (const [day, want] of Object.entries(targets)) {
+        const pool = c.filter((e) => e.weekday === day && eligible(e, kind));
+        for (let i = 0; i < want && pool.length; i++) order.push(pool[Math.floor(((i + 0.5) * pool.length) / want)]);
+      }
+      return order;
+    });
+    clubMixAddedFans = total(mine);
+  }
+  return { entries, addedFans: total(entries), conventionalAddedFans: total(conventional), clubMixAddedFans };
 }

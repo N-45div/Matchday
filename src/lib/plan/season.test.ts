@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { baselineFor, planSeason, type ClubBaseline, type Lifts } from "./season";
+import { baselineFor, planSeason, weekdayTargets, type ClubBaseline, type Lifts } from "./season";
 
 const baseline: ClubBaseline = {
   weekday: { Monday: { mean: 3000 }, Tuesday: { mean: 3000 }, Wednesday: { mean: 3000 }, Thursday: { mean: 3200 }, Friday: { mean: 5000 }, Saturday: { mean: 5200 }, Sunday: { mean: 4000 } },
@@ -56,5 +56,21 @@ describe("planSeason", () => {
   it("caps expected crowds at the club's ceiling", () => {
     const plan = planSeason(dates, baseline, lifts, {});
     expect(plan.entries[0].expected).toBeLessThanOrEqual(6000);
+  });
+});
+
+describe("weekdayTargets", () => {
+  it("splits nights in proportion to last season's weekdays", () => {
+    expect(weekdayTargets(6, { Friday: 10, Saturday: 10, Wednesday: 1 })).toEqual({ Friday: 3, Saturday: 3, Wednesday: 0 });
+    expect(weekdayTargets(3, {})).toEqual({});
+  });
+});
+
+describe("club mix comparison", () => {
+  it("scores the club's own weekend-heavy placement below the desk plan", () => {
+    const plan = planSeason(dates, baseline, lifts, { fireworks: 2 }, { fireworks: true }, { fireworks: { Friday: 5, Saturday: 5 } });
+    expect(plan.clubMixAddedFans).not.toBeNull();
+    expect(plan.addedFans).toBeGreaterThan(plan.clubMixAddedFans!);
+    expect(planSeason(dates, baseline, lifts, { fireworks: 2 }).clubMixAddedFans).toBeNull();
   });
 });
