@@ -35,7 +35,7 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
             {plan.clubMixAddedFans != null && <Stat label="Same nights, your 2026 weekdays" value={`+${fmt(plan.clubMixAddedFans)}`} />}
             {plan.clubMixAddedFans != null && <Stat label="Difference" value={`${plan.addedFans >= plan.clubMixAddedFans ? "+" : ""}${fmt(plan.addedFans - plan.clubMixAddedFans)} fans`} />}
           </div>
-          <p className="mt-3 text-xs text-muted">Estimates from 2025–26 games at every MLB and affiliated minor league park. They are observed associations, not guarantees; see How we measured.</p>
+          <p className="mt-3 text-xs text-muted">Estimates from 2025–26 games at every MLB and affiliated minor league park. They are observed associations, not guarantees; see the Evidence page.</p>
         </section>
       )}
 
