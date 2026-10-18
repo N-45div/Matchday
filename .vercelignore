@@ -1,0 +1,5 @@
+# Local-only data: raw MLB rows and cached Qloo output live in the database, never in a deployment.
+data/raw
+data/cache
+.env*
+!.env.example
