@@ -34,6 +34,13 @@ describe("buildBoard", () => {
     expect(buildBoard(["Lucky Star Casino"], [], 150, ["gambling"])).toHaveLength(1);
   });
 
+  it("treats brewing and brewery as the same business", () => {
+    const brewery = rankSponsors({ city: [{ entity_id: "g", name: "The River Brewery", tags: [{ id: "urn:tag:genre:brand:wine_and_spirits:beer" }] }] });
+    const board = buildBoard(["River Brewing Company"], brewery);
+    expect(board).toHaveLength(1);
+    expect(board[0]).toMatchObject({ source: "both", assistantRank: 0 });
+  });
+
   it("drops duplicate and empty assistant names", () => {
     expect(buildBoard(["Main Street Diner", "Main Street Diner (downtown)", "  "], [])).toHaveLength(1);
   });
