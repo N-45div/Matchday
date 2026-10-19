@@ -36,6 +36,8 @@ export interface SeasonPlan {
   conventionalAddedFans: number;
   /** Fans added by the same promotions spread over weekdays the way the club did last season, if known. */
   clubMixAddedFans: number | null;
+  /** That placement night by night, for side-by-side views. */
+  clubMixEntries: PlanEntry[] | null;
 }
 
 /** Last season's nights per promotion per weekday, e.g. { fireworks: { Friday: 10, Saturday: 10 } }. */
@@ -67,14 +69,16 @@ function withLift(base: number, pct: number, cap?: number) {
   return cap ? Math.min(raw, Math.max(cap, base)) : raw;
 }
 
-function place(entries: PlanEntry[], budget: Budget, lifts: Lifts, cap: number | undefined, choose: (candidates: PlanEntry[], kind: Exclude<PromoKind, "opening">) => PlanEntry[]) {
+/** spaced = keep the desk's minimum gap between nights of one kind; a club's own record doesn't follow it (back-to-back Friday and Saturday fireworks are common). */
+function place(entries: PlanEntry[], budget: Budget, lifts: Lifts, cap: number | undefined, choose: (candidates: PlanEntry[], kind: Exclude<PromoKind, "opening">) => PlanEntry[], spaced = true) {
   for (const kind of ORDER) {
     let left = budget[kind] ?? 0;
     const taken: number[] = [];
     for (const e of choose(entries.filter((x) => x.promo === null), kind)) {
       if (left <= 0) break;
+      if (e.promo !== null) continue;
       const day = dayNumber(e.date);
-      if (taken.some((t) => Math.abs(t - day) < MIN_GAP_DAYS[kind])) continue;
+      if (spaced && taken.some((t) => Math.abs(t - day) < MIN_GAP_DAYS[kind])) continue;
       const pct = isMidweek(e.weekday) ? lifts[kind].midweek : lifts[kind].weekend;
       e.promo = kind;
       e.expected = withLift(e.baseline, pct, cap);
@@ -135,6 +139,7 @@ export function planSeason(dates: HomeDate[], baseline: ClubBaseline, lifts: Lif
 
   // The club's own way: the same nights, on the weekdays the club used last season, spread evenly through the season.
   let clubMixAddedFans: number | null = null;
+  let clubMixEntries: PlanEntry[] | null = null;
   if (clubMix && Object.keys(clubMix).length) {
     const mine = fresh();
     open(mine);
@@ -145,9 +150,11 @@ export function planSeason(dates: HomeDate[], baseline: ClubBaseline, lifts: Lif
         const pool = c.filter((e) => e.weekday === day && eligible(e, kind));
         for (let i = 0; i < want && pool.length; i++) order.push(pool[Math.floor(((i + 0.5) * pool.length) / want)]);
       }
-      return order;
-    });
+      // If a weekday runs out of dates, the rest go on the biggest crowds, so both plans place the same number of nights.
+      return [...order, ...c.filter((e) => eligible(e, kind)).sort((a, b) => b.baseline - a.baseline || a.date.localeCompare(b.date))];
+    }, false);
     clubMixAddedFans = total(mine);
+    clubMixEntries = mine;
   }
-  return { entries, addedFans: total(entries), conventionalAddedFans: total(conventional), clubMixAddedFans };
+  return { entries, addedFans: total(entries), conventionalAddedFans: total(conventional), clubMixAddedFans, clubMixEntries };
 }

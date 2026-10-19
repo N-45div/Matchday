@@ -74,3 +74,12 @@ describe("club mix comparison", () => {
     expect(planSeason(dates, baseline, lifts, { fireworks: 2 }).clubMixAddedFans).toBeNull();
   });
 });
+
+describe("club mix fairness", () => {
+  it("places as many nights the club's way as the desk does, back to back if that's how the club ran them", () => {
+    const plan = planSeason(dates, baseline, lifts, { fireworks: 4 }, { fireworks: true }, { fireworks: { Friday: 5, Saturday: 5 } });
+    const count = (es: { promo: string | null }[]) => es.filter((e) => e.promo === "fireworks").length;
+    expect(count(plan.entries)).toBe(4);
+    expect(count(plan.clubMixEntries!)).toBe(4);
+  });
+});
