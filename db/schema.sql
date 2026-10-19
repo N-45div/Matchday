@@ -39,6 +39,8 @@ create table if not exists club_ai_prospects (
   names jsonb not null,
   created_at timestamptz not null default now()
 );
+-- Names a model flagged as alcohol, gambling, tobacco or cannabis (scripts/classify-prospects.mts): { name: [restriction] }.
+alter table club_ai_prospects add column if not exists restricted jsonb not null default '{}'::jsonb;
 
 -- Each brand's median rank across every club city's Qloo brand pool, for "stronger here than in a typical club city".
 create table if not exists brand_city_median (

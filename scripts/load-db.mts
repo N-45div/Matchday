@@ -30,14 +30,16 @@ for (const t of teams) {
   }
 }
 
-// LLM prospect lists (the half of the hybrid an assistant supplies).
+// LLM prospect lists (the half of the hybrid an assistant supplies), with the names flagged as restricted.
 let prospects = 0;
 for (const t of teams) {
   const file = `data/cache/prospects/${t.id}.json`;
   if (!existsSync(file)) continue;
   const names = (JSON.parse(readFileSync(file, "utf8")) as { name: string }[]).map((x) => x.name);
-  await sql`insert into club_ai_prospects (club_id, model, names) values (${t.id}, ${"anthropic/claude-haiku-5.5"}, ${JSON.stringify(names)})
-    on conflict (club_id) do update set model = excluded.model, names = excluded.names, created_at = now()`;
+  const flagFile = `data/cache/prospect-flags/${t.id}.json`;
+  const restricted = existsSync(flagFile) ? readFileSync(flagFile, "utf8") : "{}";
+  await sql`insert into club_ai_prospects (club_id, model, names, restricted) values (${t.id}, ${"anthropic/claude-haiku-5.5"}, ${JSON.stringify(names)}, ${restricted})
+    on conflict (club_id) do update set model = excluded.model, names = excluded.names, restricted = excluded.restricted, created_at = now()`;
   prospects++;
 }
 
