@@ -9,7 +9,7 @@ import { sql } from "../db";
 import { toPartners, type Partner, type QlooPlace } from "../partners/partners";
 import { planSeason, type Budget, type ClubBaseline, type Lifts, type PromoMix, type SeasonPlan } from "../plan/season";
 import { buildBoard, type BoardItem } from "../sponsors/board";
-import type { QlooBrand } from "../sponsors/categories";
+import type { QlooBrand, Restriction } from "../sponsors/categories";
 import { rankSponsors } from "../sponsors/rank";
 
 export interface ClubDesk {
@@ -59,7 +59,7 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   const [club] = (await db`select id, name, nickname, league, city, region, venue, market, lat, lng, team_entity_id from clubs where id = ${id}`) as ClubRow[];
   if (!club) return null;
   const [qloo] = (await db`select fetched_at, city_brands, fan_brands, partners from club_qloo where club_id = ${id}`) as QlooRow[];
-  const [ai] = (await db`select names from club_ai_prospects where club_id = ${id}`) as { names: string[] }[];
+  const [ai] = (await db`select names, restricted from club_ai_prospects where club_id = ${id}`) as { names: string[]; restricted: Record<string, Restriction[]> }[];
   const dates = (await db`select to_char(date, 'YYYY-MM-DD') as date, day_night from home_dates where club_id = ${id} order by date`) as { date: string; day_night: string | null }[];
 
   const brandIds = [...new Set([...(qloo?.city_brands ?? []), ...(qloo?.fan_brands ?? [])].map((b) => b.entity_id))];
@@ -82,7 +82,7 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
 
   return {
     club: { id: club.id, name: club.name, nickname: club.nickname ?? club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
-    board: buildBoard(ai?.names ?? [], qlooBoard),
+    board: buildBoard(ai?.names ?? [], qlooBoard, 150, [], ai?.restricted ?? {}),
     partners,
     partnersReason: partners.length ? null : club.lat == null || club.lng == null ? "no-coordinates" : "none-nearby",
     plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: dayNight(d) })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,

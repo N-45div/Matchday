@@ -18,13 +18,14 @@ export interface BoardItem {
 const key = (name: string) =>
   name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\(.*?\)/g, "").replace(/\b(brewing|brewery|brewers)\b/g, "brew").replace(/\b(inc|llc|co|company|the)\b/g, "").replace(/[^a-z0-9]+/g, " ").trim();
 
-export function buildBoard(assistantNames: string[], qlooBoard: SponsorCandidate[], perSource = 150, enabled: Restriction[] = []): BoardItem[] {
+/** flagged: restrictions read from each assistant name by a model (brand names rarely say "beer"), added to the keyword check. */
+export function buildBoard(assistantNames: string[], qlooBoard: SponsorCandidate[], perSource = 150, enabled: Restriction[] = [], flagged: Record<string, Restriction[]> = {}): BoardItem[] {
   const blocked = OFF_BY_DEFAULT.filter((r) => !enabled.includes(r));
   const byKey = new Map<string, BoardItem>();
   assistantNames.slice(0, perSource).forEach((name, rank) => {
     const k = key(name);
     if (!k || byKey.has(k)) return;
-    byKey.set(k, { name, source: "assistant", restrictions: nameRestrictions(name), category: null, qloo: null, assistantRank: rank });
+    byKey.set(k, { name, source: "assistant", restrictions: [...new Set([...nameRestrictions(name), ...(flagged[name] ?? [])])], category: null, qloo: null, assistantRank: rank });
   });
   for (const c of qlooBoard.slice(0, perSource)) {
     const k = key(c.brand.name);

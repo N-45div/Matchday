@@ -44,3 +44,10 @@ describe("buildBoard", () => {
     expect(buildBoard(["Main Street Diner", "Main Street Diner (downtown)", "  "], [])).toHaveLength(1);
   });
 });
+
+describe("flagged names", () => {
+  it("drops brand names a model flagged even when the words say nothing", () => {
+    const board = buildBoard(["Labatt Blue", "Main Street Diner"], [], 150, [], { "Labatt Blue": ["alcohol"] });
+    expect(board.map((b) => b.name)).toEqual(["Main Street Diner"]);
+  });
+});
