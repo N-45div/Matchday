@@ -25,7 +25,7 @@ export interface SponsorCandidate {
 export interface RankOptions {
   local?: LocalStats;
   poolSize?: number;
-  /** Restricted categories the club has switched on (gambling, tobacco, ...). Alcohol is always on. */
+  /** Restricted categories the club has switched on (alcohol, gambling, ...); all are off by default. */
   enabled?: Restriction[];
   limit?: number;
 }

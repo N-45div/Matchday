@@ -11,8 +11,8 @@ export interface QlooBrand {
 
 export type Restriction = "alcohol" | "gambling" | "tobacco" | "cannabis" | "crypto" | "firearms";
 
-/** Categories that are off the board unless the club turns them on. Alcohol stays on, with night rules. */
-export const OFF_BY_DEFAULT: Restriction[] = ["gambling", "tobacco", "cannabis", "crypto", "firearms"];
+/** Categories left off the board unless a club turns them on. The desk is for family ballparks, so alcohol is off too. */
+export const OFF_BY_DEFAULT: Restriction[] = ["alcohol", "gambling", "tobacco", "cannabis", "crypto", "firearms"];
 
 export interface BrandProfile {
   sponsorable: boolean;

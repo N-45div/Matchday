@@ -14,10 +14,11 @@ describe("rankSponsors", () => {
     expect(board[0]).toMatchObject({ cityRank: 2, teamRank: 0 });
   });
 
-  it("keeps alcohol, hides restricted categories unless enabled", () => {
+  it("hides alcohol and other restricted categories unless enabled", () => {
     const pools = { city: [casino("x"), beer("y"), retail("z")] };
-    expect(rankSponsors(pools).map((c) => c.brand.entity_id)).toEqual(["y", "z"]);
-    expect(rankSponsors(pools, { enabled: ["gambling"] }).map((c) => c.brand.entity_id)).toEqual(["x", "y", "z"]);
+    expect(rankSponsors(pools).map((c) => c.brand.entity_id)).toEqual(["z"]);
+    expect(rankSponsors(pools, { enabled: ["gambling"] }).map((c) => c.brand.entity_id)).toEqual(["x", "z"]);
+    expect(rankSponsors(pools, { enabled: ["alcohol"] }).map((c) => c.brand.entity_id)).toEqual(["y", "z"]);
   });
 
   it("boosts brands that are far stronger here than in other cities", () => {

@@ -27,16 +27,15 @@ describe("buildBoard", () => {
     expect(board[0].qloo?.brand.entity_id).toBe("a");
   });
 
-  it("keeps alcohol (with its flag) and hides gambling unless the club enables it", () => {
-    const board = buildBoard(["Lucky Star Casino", "River Bend Brewing"], []);
-    expect(board.map((b) => b.name)).toEqual(["River Bend Brewing"]);
-    expect(board[0].restrictions).toEqual(["alcohol"]);
+  it("hides alcohol and gambling unless the club enables them", () => {
+    expect(buildBoard(["Lucky Star Casino", "River Bend Brewing", "Main Street Diner"], []).map((b) => b.name)).toEqual(["Main Street Diner"]);
     expect(buildBoard(["Lucky Star Casino"], [], 150, ["gambling"])).toHaveLength(1);
+    expect(buildBoard(["River Bend Brewing"], [], 150, ["alcohol"])[0].restrictions).toEqual(["alcohol"]);
   });
 
   it("treats brewing and brewery as the same business", () => {
-    const brewery = rankSponsors({ city: [{ entity_id: "g", name: "The River Brewery", tags: [{ id: "urn:tag:genre:brand:wine_and_spirits:beer" }] }] });
-    const board = buildBoard(["River Brewing Company"], brewery);
+    const brewery = rankSponsors({ city: [{ entity_id: "g", name: "The River Brewery", tags: [{ id: "urn:tag:genre:brand:wine_and_spirits:beer" }] }] }, { enabled: ["alcohol"] });
+    const board = buildBoard(["River Brewing Company"], brewery, 150, ["alcohol"]);
     expect(board).toHaveLength(1);
     expect(board[0]).toMatchObject({ source: "both", assistantRank: 0 });
   });
