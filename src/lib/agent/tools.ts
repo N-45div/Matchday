@@ -10,7 +10,6 @@ import { listClubs, type ClubSummary } from "../data/clubs";
 import { getClubDesk, type ClubDesk } from "../data/desk";
 import type { PromoKind } from "../plan/season";
 import type { BoardItem } from "../sponsors/board";
-import { allowedOnNight } from "../sponsors/categories";
 import { evidence } from "../sponsors/rank";
 
 /** A problem the caller can fix (an unknown club id, say), reported back as a plain sentence. */
@@ -58,7 +57,6 @@ export async function findClubs({ query }: z.infer<typeof findClubsInput>) {
 
 export const sponsorBoardInput = z.object({
   clubId,
-  familyNight: z.boolean().optional().describe("True to keep only presenters allowed on kids', family, school or faith nights (drops alcohol)."),
   category: z.string().max(40).optional().describe("Keep only audience-fit brands whose Qloo category contains this, such as 'food', 'restaurant' or 'retail'."),
   limit: z.number().int().min(1).max(40).optional().describe("How many of each list to return (default 12)."),
 });
@@ -66,18 +64,17 @@ export const sponsorBoardInput = z.object({
 function sponsorLine(item: BoardItem, city: string, nickname: string) {
   return {
     name: item.name,
-    sources: item.source === "both" ? "assistant and Qloo" : item.source,
+    sources: item.source === "both" ? "named by the assistant and ranked by Qloo" : item.source === "qloo" ? "ranked by Qloo" : "named by the assistant",
     category: item.category?.replaceAll("_", " ") ?? null,
-    restrictions: item.restrictions,
     evidence: item.qloo ? evidence(item.qloo, city, nickname) : [],
   };
 }
 
-export async function sponsorBoard({ clubId: id, familyNight, category, limit = 12 }: z.infer<typeof sponsorBoardInput>) {
+export async function sponsorBoard({ clubId: id, category, limit = 12 }: z.infer<typeof sponsorBoardInput>) {
   const desk = await deskOrThrow(id);
   const nickname = desk.club.nickname;
-  const keep = (i: BoardItem) => (!familyNight || allowedOnNight(i.restrictions, { family: true })) && (!category || (i.category ?? "").replaceAll("_", " ").includes(category.toLowerCase()));
-  const local = desk.board.filter((i) => i.assistantRank != null && (!familyNight || allowedOnNight(i.restrictions, { family: true }))).sort((a, b) => a.assistantRank! - b.assistantRank!);
+  const keep = (i: BoardItem) => !category || (i.category ?? "").replaceAll("_", " ").includes(category.toLowerCase());
+  const local = desk.board.filter((i) => i.assistantRank != null).sort((a, b) => a.assistantRank! - b.assistantRank!);
   const fit = desk.board.filter((i) => i.qloo && keep(i)).sort((a, b) => b.qloo!.score - a.qloo!.score);
   return {
     club: header(desk.club),
@@ -86,7 +83,7 @@ export async function sponsorBoard({ clubId: id, familyNight, category, limit = 
     totals: { localBusinesses: local.length, audienceFitBrands: fit.length },
     notes: [
       "Local businesses are named by a language model; audience-fit brands are ranked from Qloo taste data for the city and, where Qloo knows the club, its fans.",
-      "Gambling, tobacco, cannabis, crypto and firearms brands are left off. Alcohol brands are flagged and belong on 21+ nights only.",
+      "Alcohol, gambling, tobacco, cannabis, crypto and firearms brands are left off, so every name here suits a family ballpark.",
       desk.qlooFetchedAt ? `Qloo data fetched ${desk.qlooFetchedAt.slice(0, 10)}.` : "No Qloo data is cached for this club yet.",
     ],
   };
@@ -97,7 +94,7 @@ export async function sponsorBoard({ clubId: id, familyNight, category, limit = 
 export const partnersInput = z.object({
   clubId,
   openOn: z.enum(WEEKDAYS).optional().describe("Keep only places open from 17:30 to 22:00 on this weekday, i.e. through a night game."),
-  kind: z.string().max(40).optional().describe("Keep only places whose kind contains this, such as 'brewery', 'pizza' or 'cafe'."),
+  kind: z.string().max(40).optional().describe("Keep only places whose kind contains this, such as 'pizza', 'coffee' or 'bakery'."),
   limit: z.number().int().min(1).max(30).optional().describe("How many places to return (default 10)."),
 });
 
@@ -109,8 +106,8 @@ export async function nearbyPartners({ clubId: id, openOn, kind, limit = 10 }: z
     partners: places.slice(0, limit).map((p) => ({ name: p.name, kind: p.kind, distanceKm: p.distanceKm, priceLevel: p.priceLevel, rating: p.rating, openThroughNightGamesOn: p.gameNightDays, phone: p.phone, website: p.website, address: p.address })),
     total: places.length,
     notes: desk.partners.length
-      ? ["Food and drink places within 3 km of the ballpark, ranked by Qloo for the club's fans. Hours are as listed on Qloo and can be out of date."]
-      : ["No partner list for this club: its ballpark has no map coordinates in the data yet."],
+      ? ["Restaurants, cafes and bakeries within 3 km of the ballpark, ranked by Qloo for the club's fans. Bars, pubs and breweries are left out. Hours are as listed on Qloo and can be out of date."]
+      : [desk.partnersReason === "no-coordinates" ? "No partner list for this club: its ballpark has no map coordinates in the data yet." : "Qloo listed no family food places within 3 km of this ballpark."],
   };
 }
 

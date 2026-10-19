@@ -26,15 +26,15 @@ export const DESK_TOOLS: Record<string, DeskTool> = {
     description:
       "Returns a club's sponsor prospects as two lists: local businesses a language model named for the club's market, and consumer brands " +
       "ranked with Qloo taste data for the club's city and fans, each with its evidence (its rank in the city, among the club's fans, and how " +
-      "much stronger it is here than in a typical club city). Brands both lists contain are marked. Gambling, tobacco, cannabis, crypto and " +
-      "firearms are left off; alcohol is flagged. Use for questions about who to pitch, presenting sponsors, or which brands fit a promotion night.",
+      "much stronger it is here than in a typical club city). Brands both lists contain are marked. Alcohol, gambling, tobacco, cannabis, " +
+      "crypto and firearms brands are left off. Use for questions about who to pitch, presenting sponsors, or which brands fit a promotion night.",
     input: sponsorBoardInput,
     run: sponsorBoard,
   }),
   nearby_partners: define({
-    title: "Food and drink partners",
+    title: "Food partners near the ballpark",
     description:
-      "Lists food and drink places within 3 km of a club's ballpark, ranked by Qloo for the club's fans, with kind, distance, price level, " +
+      "Lists restaurants, cafes and bakeries within 3 km of a club's ballpark (no bars, pubs or breweries), ranked by Qloo for the club's fans, with kind, distance, price level, " +
       "rating, phone, website and the weekdays they stay open through a night game (17:30-22:00). Use for co-promotions, ticket-stub deals " +
       "or a ballpark food night.",
     input: partnersInput,

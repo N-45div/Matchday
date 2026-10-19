@@ -8,7 +8,7 @@ import { DeskToolError } from "./tools";
 const INSTRUCTIONS =
   "Matchday Revenue Desk is for the marketing and sponsorship staff of MLB and affiliated minor league baseball clubs. It plans next " +
   "season's promotion nights from measured attendance lift, lists sponsor prospects (local businesses plus Qloo audience-fit brands with " +
-  "evidence) and finds food and drink partners near the ballpark. Start with find_clubs to get a club id. Quote numbers as the tools give " +
+  "evidence) and finds family food partners near the ballpark. Start with find_clubs to get a club id. Quote numbers as the tools give " +
   "them and say they are estimates; don't invent sponsors, partners or dates the tools didn't return.";
 
 /** Read-only lookups over cached data: nothing is written, deleted or fetched from the open web. */
