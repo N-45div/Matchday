@@ -40,7 +40,7 @@ function budgetFrom(mix: PromoMix | undefined, tier: "MLB" | "MiLB"): Budget {
 }
 
 type ClubRow = { id: string; name: string; league: string; city: string; region: string | null; venue: string | null; market: string; lat: number | null; lng: number | null; team_entity_id: string | null };
-type QlooRow = { fetched_at: string; city_brands: QlooBrand[]; fan_brands: QlooBrand[]; partners: QlooPlace[] };
+type QlooRow = { fetched_at: Date; city_brands: QlooBrand[]; fan_brands: QlooBrand[]; partners: QlooPlace[] };
 
 export interface DeskOptions {
   /** Nights per promotion; replaces the club's own 2026 numbers for any promotion given. */
@@ -68,7 +68,8 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   const seasons = (baselines as Record<string, Record<string, ClubBaseline>>)[id];
   const baseline = seasons?.["2026"] ?? seasons?.["2025"];
   const skip = new Set(opts.skipMonths ?? []);
-  const open = dates.filter((d) => !skip.has(Number(d.date.slice(5, 7))));
+  // The opener stays: it's opening day whatever else the club skips.
+  const open = dates.filter((d, i) => i === 0 || !skip.has(Number(d.date.slice(5, 7))));
 
   return {
     club: { id: club.id, name: club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
@@ -77,6 +78,6 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
     plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: d.day_night })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
     budget,
     tier,
-    qlooFetchedAt: qloo?.fetched_at ?? null,
+    qlooFetchedAt: qloo ? qloo.fetched_at.toISOString() : null,
   };
 }
