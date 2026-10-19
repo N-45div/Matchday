@@ -43,3 +43,11 @@ create table if not exists brand_city_median (
   entity_id text primary key,
   median_rank integer not null
 );
+
+-- Daily request counts for the public demo's limits (src/lib/agent/limits.ts). Keys hold hashed addresses only.
+create table if not exists usage_counts (
+  key text not null,
+  day date not null,
+  count integer not null default 0,
+  primary key (key, day)
+);
