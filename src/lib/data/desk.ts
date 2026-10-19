@@ -15,6 +15,8 @@ export interface ClubDesk {
   club: { id: string; name: string; nickname: string; league: string; city: string; region: string | null; venue: string | null; market: string; hasFanSignal: boolean };
   board: BoardItem[];
   partners: Partner[];
+  /** Why the partner list is empty, when it is. */
+  partnersReason: "no-coordinates" | "none-nearby" | null;
   plan: SeasonPlan | null;
   budget: Budget;
   tier: "MLB" | "MiLB";
@@ -68,13 +70,15 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   const seasons = (baselines as Record<string, Record<string, ClubBaseline>>)[id];
   const baseline = seasons?.["2026"] ?? seasons?.["2025"];
   const skip = new Set(opts.skipMonths ?? []);
+  const partners = club.lat != null && club.lng != null && qloo ? toPartners(qloo.partners, { lat: club.lat, lng: club.lng }) : [];
   // The opener stays: it's opening day whatever else the club skips.
   const open = dates.filter((d, i) => i === 0 || !skip.has(Number(d.date.slice(5, 7))));
 
   return {
     club: { id: club.id, name: club.name, nickname: club.nickname ?? club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
     board: buildBoard(ai?.names ?? [], qlooBoard),
-    partners: club.lat != null && club.lng != null && qloo ? toPartners(qloo.partners, { lat: club.lat, lng: club.lng }) : [],
+    partners,
+    partnersReason: partners.length ? null : club.lat == null || club.lng == null ? "no-coordinates" : "none-nearby",
     plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: d.day_night })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
     budget,
     tier,

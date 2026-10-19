@@ -1,4 +1,4 @@
-// Local food and drink partners near a ballpark, ranked by how much the club's own fans like them
+// Local food partners near a ballpark, ranked by how much the club's own fans like them
 // (Qloo place affinity to the club entity). Used for concession tie-ins, partner nights and small sponsors.
 
 import type { QueryParams } from "../qloo/client";
@@ -8,8 +8,6 @@ export const PARTNER_TAGS = [
   "urn:tag:genre:place:restaurant:cafe",
   "urn:tag:genre:place:restaurant:coffee_shop",
   "urn:tag:genre:place:restaurant:bakery",
-  "urn:tag:genre:place:brewery",
-  "urn:tag:genre:place:bar",
 ];
 
 type Hours = Record<string, { opens?: string; closes?: string; closed?: boolean }[]>;
@@ -63,16 +61,31 @@ export function partnerQuery(venue: Venue, teamEntityId?: string | null, radiusM
 }
 
 const KINDS: [RegExp, string][] = [
-  [/brew/i, "Brewery"],
-  [/coffee|cafe|café/i, "Coffee"],
-  [/bakery|dessert|ice cream/i, "Bakery & dessert"],
-  [/bar|pub|tavern|lounge/i, "Bar"],
+  [/coffee|cafe|café|espresso/i, "Coffee"],
+  [/bakery|dessert|ice cream|chocolate/i, "Bakery & dessert"],
+  [/pizza/i, "Pizza"],
+  [/barbecue|bbq/i, "Barbecue"],
+  [/burger/i, "Burgers"],
+  [/deli|sandwich/i, "Deli"],
 ];
 
+const placeTags = (place: QlooPlace) => (place.tags ?? []).filter((t) => (t.id ?? t.tag_id ?? "").startsWith("urn:tag:genre:place")).map((t) => t.name ?? "");
+
 export function kindOf(place: QlooPlace): string {
-  const names = (place.tags ?? []).filter((t) => (t.id ?? t.tag_id ?? "").startsWith("urn:tag:genre:place")).map((t) => t.name ?? "");
+  const names = placeTags(place);
   for (const [re, kind] of KINDS) if (names.some((n) => re.test(n))) return kind;
   return "Restaurant";
+}
+
+// Bars, pubs, breweries, wine and cocktail places are left out: the desk lists family food partners only.
+// "Espresso bar", "juice bar" and "Bar-B-Que" are food, so they're taken out of the text before the test.
+const DRINKS = /\b(bars?|pubs?|gastropub|brew\w*|tavern|lounge|night ?club|beer|wine\w*|liquor|cocktails?|taproom|tap room|distiller\w*|speakeasy|saloon|cider\w*|whiske?y)\b/i;
+const FOOD_BARS = /\b(espresso|juice|salad|sushi|oyster|smoothie|snack|tea|coffee|dessert|yogurt|acai|poke|noodle|ramen|raw)\s+bars?\b/gi;
+const BBQ = /bar[- ]?b[- ]?q(ue)?/gi;
+const drinky = (text: string) => DRINKS.test(text.replace(BBQ, "bbq").replace(FOOD_BARS, "food"));
+
+export function isDrinkPlace(place: QlooPlace): boolean {
+  return drinky(place.name) || placeTags(place).some(drinky);
 }
 
 export function distanceKm(a: Venue, b: { lat: number; lon: number }): number {
@@ -109,7 +122,7 @@ export function toPartners(places: QlooPlace[], venue: Venue): Partner[] {
   const out: Partner[] = [];
   places.forEach((place, rank) => {
     const key = place.name.toLowerCase().replace(/[^a-z0-9]/g, "");
-    if (place.properties?.is_closed || seen.has(key)) return;
+    if (place.properties?.is_closed || seen.has(key) || isDrinkPlace(place)) return;
     seen.add(key);
     const p = place.properties ?? {};
     out.push({
