@@ -140,7 +140,7 @@ export async function planNextSeason({ clubId: id, fireworks, bobblehead, giveaw
     nights: promoted.map((e) => ({ date: e.date, weekday: e.weekday, promotion: e.promo, expectedCrowd: e.expected, addedFans: e.addedFans, familyDay: e.family })),
     notes: [
       "Added fans are estimates from measured lift at 2025-26 games, scaled to this club's own weekday and month crowds and capped at its biggest crowds. They are averages, not promises for a given night.",
-      "2027 start times aren't set yet, so check each fireworks date is a night game once the club sets its times.",
+      "2027 start times aren't set yet. Weekdays this club played mostly in daylight in 2025-26 (usually Sundays) are treated as day games, so fireworks stay off them; check each date once times are set.",
       skipMonths?.length ? `Months kept free: ${skipMonths.join(", ")}.` : null,
     ].filter(Boolean),
   };

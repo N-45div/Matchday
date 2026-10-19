@@ -4,6 +4,7 @@
 import lift from "../../../data/lift/lift.json";
 import baselines from "../../../data/lift/baselines.json";
 import promoMix from "../../../data/lift/promo-mix.json";
+import nightShare from "../../../data/lift/night-share.json";
 import { sql } from "../db";
 import { toPartners, type Partner, type QlooPlace } from "../partners/partners";
 import { planSeason, type Budget, type ClubBaseline, type Lifts, type PromoMix, type SeasonPlan } from "../plan/season";
@@ -22,6 +23,8 @@ export interface ClubDesk {
   tier: "MLB" | "MiLB";
   qlooFetchedAt: string | null;
 }
+
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 /** Nights per promotion when a club has no 2026 record to copy. */
 const DEFAULT_BUDGET: Record<"MLB" | "MiLB", Budget> = {
@@ -73,13 +76,16 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   const partners = club.lat != null && club.lng != null && qloo ? toPartners(qloo.partners, { lat: club.lat, lng: club.lng }) : [];
   // The opener stays: it's opening day whatever else the club skips.
   const open = dates.filter((d, i) => i === 0 || !skip.has(Number(d.date.slice(5, 7))));
+  // Start times are unset until clubs publish them; a weekday this club played mostly in daylight in 2025-26 counts as a day game.
+  const nights = (nightShare.clubs as Record<string, Record<string, number>>)[id] ?? {};
+  const dayNight = (d: { date: string; day_night: string | null }) => d.day_night ?? ((nights[WEEKDAYS[new Date(`${d.date}T12:00:00Z`).getUTCDay()]] ?? 1) < 0.5 ? "day" : null);
 
   return {
     club: { id: club.id, name: club.name, nickname: club.nickname ?? club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
     board: buildBoard(ai?.names ?? [], qlooBoard),
     partners,
     partnersReason: partners.length ? null : club.lat == null || club.lng == null ? "no-coordinates" : "none-nearby",
-    plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: d.day_night })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
+    plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: dayNight(d) })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
     budget,
     tier,
     qlooFetchedAt: qloo ? qloo.fetched_at.toISOString() : null,
