@@ -3,6 +3,7 @@
 create table if not exists clubs (
   id text primary key,
   name text not null,
+  nickname text,
   league text not null,
   city text not null,
   region text,
@@ -12,6 +13,7 @@ create table if not exists clubs (
   lng double precision,
   team_entity_id text
 );
+alter table clubs add column if not exists nickname text;
 
 -- Qloo output cached per club (brand pools and nearby partners), refreshed by scripts/precompute.mts.
 create table if not exists club_qloo (

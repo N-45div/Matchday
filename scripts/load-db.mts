@@ -11,15 +11,15 @@ for (const statement of readFileSync("db/schema.sql", "utf8").split(";").map((s)
   await sql.query(statement);
 }
 
-interface Team { id: string; name: string; league: string; city: string; region: string | null; market: string; venue: string | null; lat: number | null; lng: number | null }
+interface Team { id: string; name: string; nickname: string; league: string; city: string; region: string | null; market: string; venue: string | null; lat: number | null; lng: number | null }
 const teams: Team[] = JSON.parse(readFileSync("data/teams/baseball.json", "utf8")).teams;
 let cached = 0;
 for (const t of teams) {
   const file = `data/cache/clubs/${t.id}.json`;
   const c = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
-  await sql`insert into clubs (id, name, league, city, region, market, venue, lat, lng, team_entity_id)
-    values (${t.id}, ${t.name}, ${t.league}, ${t.city}, ${t.region}, ${t.market}, ${t.venue}, ${t.lat}, ${t.lng}, ${c?.teamEntityId ?? null})
-    on conflict (id) do update set name = excluded.name, league = excluded.league, city = excluded.city, region = excluded.region,
+  await sql`insert into clubs (id, name, nickname, league, city, region, market, venue, lat, lng, team_entity_id)
+    values (${t.id}, ${t.name}, ${t.nickname}, ${t.league}, ${t.city}, ${t.region}, ${t.market}, ${t.venue}, ${t.lat}, ${t.lng}, ${c?.teamEntityId ?? null})
+    on conflict (id) do update set name = excluded.name, nickname = excluded.nickname, league = excluded.league, city = excluded.city, region = excluded.region,
       market = excluded.market, venue = excluded.venue, lat = excluded.lat, lng = excluded.lng, team_entity_id = excluded.team_entity_id`;
   if (c) {
     await sql`insert into club_qloo (club_id, fetched_at, city_brands, fan_brands, partners)

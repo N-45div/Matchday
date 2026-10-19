@@ -75,7 +75,7 @@ function sponsorLine(item: BoardItem, city: string, nickname: string) {
 
 export async function sponsorBoard({ clubId: id, familyNight, category, limit = 12 }: z.infer<typeof sponsorBoardInput>) {
   const desk = await deskOrThrow(id);
-  const nickname = desk.club.name.split(" ").slice(-2).join(" ");
+  const nickname = desk.club.nickname;
   const keep = (i: BoardItem) => (!familyNight || allowedOnNight(i.restrictions, { family: true })) && (!category || (i.category ?? "").replaceAll("_", " ").includes(category.toLowerCase()));
   const local = desk.board.filter((i) => i.assistantRank != null && (!familyNight || allowedOnNight(i.restrictions, { family: true }))).sort((a, b) => a.assistantRank! - b.assistantRank!);
   const fit = desk.board.filter((i) => i.qloo && keep(i)).sort((a, b) => b.qloo!.score - a.qloo!.score);

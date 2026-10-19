@@ -15,7 +15,7 @@ function Flags({ item }: { item: BoardItem }) {
 export function SponsorBoard({ items, city, team }: { items: BoardItem[]; city: string; team: string }) {
   const assistant = items.filter((i) => i.assistantRank != null).sort((a, b) => a.assistantRank! - b.assistantRank!).slice(0, SHOWN);
   const qloo = items.filter((i) => i.qloo).sort((a, b) => b.qloo!.score - a.qloo!.score).slice(0, SHOWN);
-  const nickname = team.split(" ").slice(-2).join(" ");
+  const nickname = team;
 
   return (
     <section>

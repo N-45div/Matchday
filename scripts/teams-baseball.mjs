@@ -23,6 +23,7 @@ const rows = teams
     return {
       id: `mlb-${t.id}`,
       name: t.name,
+      nickname: t.teamName ?? t.name,
       league: LEVEL[t.sport.id],
       city: loc.city ?? t.locationName,
       region: loc.state ?? null,

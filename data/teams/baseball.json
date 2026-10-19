@@ -5,6 +5,7 @@
     {
       "id": "mlb-109",
       "name": "Arizona Diamondbacks",
+      "nickname": "D-backs",
       "league": "MLB",
       "city": "Phoenix",
       "region": "Arizona",
@@ -17,6 +18,7 @@
     {
       "id": "mlb-133",
       "name": "Athletics",
+      "nickname": "Athletics",
       "league": "MLB",
       "city": "Sacramento",
       "region": "California",
@@ -29,6 +31,7 @@
     {
       "id": "mlb-144",
       "name": "Atlanta Braves",
+      "nickname": "Braves",
       "league": "MLB",
       "city": "Atlanta",
       "region": "Georgia",
@@ -41,6 +44,7 @@
     {
       "id": "mlb-110",
       "name": "Baltimore Orioles",
+      "nickname": "Orioles",
       "league": "MLB",
       "city": "Baltimore",
       "region": "Maryland",
@@ -53,6 +57,7 @@
     {
       "id": "mlb-111",
       "name": "Boston Red Sox",
+      "nickname": "Red Sox",
       "league": "MLB",
       "city": "Boston",
       "region": "Massachusetts",
@@ -65,6 +70,7 @@
     {
       "id": "mlb-112",
       "name": "Chicago Cubs",
+      "nickname": "Cubs",
       "league": "MLB",
       "city": "Chicago",
       "region": "Illinois",
@@ -77,6 +83,7 @@
     {
       "id": "mlb-145",
       "name": "Chicago White Sox",
+      "nickname": "White Sox",
       "league": "MLB",
       "city": "Chicago",
       "region": "Illinois",
@@ -89,6 +96,7 @@
     {
       "id": "mlb-113",
       "name": "Cincinnati Reds",
+      "nickname": "Reds",
       "league": "MLB",
       "city": "Cincinnati",
       "region": "Ohio",
@@ -101,6 +109,7 @@
     {
       "id": "mlb-114",
       "name": "Cleveland Guardians",
+      "nickname": "Guardians",
       "league": "MLB",
       "city": "Cleveland",
       "region": "Ohio",
@@ -113,6 +122,7 @@
     {
       "id": "mlb-115",
       "name": "Colorado Rockies",
+      "nickname": "Rockies",
       "league": "MLB",
       "city": "Denver",
       "region": "Colorado",
@@ -125,6 +135,7 @@
     {
       "id": "mlb-116",
       "name": "Detroit Tigers",
+      "nickname": "Tigers",
       "league": "MLB",
       "city": "Detroit",
       "region": "Michigan",
@@ -137,6 +148,7 @@
     {
       "id": "mlb-117",
       "name": "Houston Astros",
+      "nickname": "Astros",
       "league": "MLB",
       "city": "Houston",
       "region": "Texas",
@@ -149,6 +161,7 @@
     {
       "id": "mlb-118",
       "name": "Kansas City Royals",
+      "nickname": "Royals",
       "league": "MLB",
       "city": "Kansas City",
       "region": "Missouri",
@@ -161,6 +174,7 @@
     {
       "id": "mlb-108",
       "name": "Los Angeles Angels",
+      "nickname": "Angels",
       "league": "MLB",
       "city": "Anaheim",
       "region": "California",
@@ -173,6 +187,7 @@
     {
       "id": "mlb-119",
       "name": "Los Angeles Dodgers",
+      "nickname": "Dodgers",
       "league": "MLB",
       "city": "Los Angeles",
       "region": "California",
@@ -185,6 +200,7 @@
     {
       "id": "mlb-146",
       "name": "Miami Marlins",
+      "nickname": "Marlins",
       "league": "MLB",
       "city": "Miami",
       "region": "Florida",
@@ -197,6 +213,7 @@
     {
       "id": "mlb-158",
       "name": "Milwaukee Brewers",
+      "nickname": "Brewers",
       "league": "MLB",
       "city": "Milwaukee",
       "region": "Wisconsin",
@@ -209,6 +226,7 @@
     {
       "id": "mlb-142",
       "name": "Minnesota Twins",
+      "nickname": "Twins",
       "league": "MLB",
       "city": "Minneapolis",
       "region": "Minnesota",
@@ -221,6 +239,7 @@
     {
       "id": "mlb-121",
       "name": "New York Mets",
+      "nickname": "Mets",
       "league": "MLB",
       "city": "Flushing",
       "region": "New York",
@@ -233,6 +252,7 @@
     {
       "id": "mlb-147",
       "name": "New York Yankees",
+      "nickname": "Yankees",
       "league": "MLB",
       "city": "Bronx",
       "region": "New York",
@@ -245,6 +265,7 @@
     {
       "id": "mlb-143",
       "name": "Philadelphia Phillies",
+      "nickname": "Phillies",
       "league": "MLB",
       "city": "Philadelphia",
       "region": "Pennsylvania",
@@ -257,6 +278,7 @@
     {
       "id": "mlb-134",
       "name": "Pittsburgh Pirates",
+      "nickname": "Pirates",
       "league": "MLB",
       "city": "Pittsburgh",
       "region": "Pennsylvania",
@@ -269,6 +291,7 @@
     {
       "id": "mlb-135",
       "name": "San Diego Padres",
+      "nickname": "Padres",
       "league": "MLB",
       "city": "San Diego",
       "region": "California",
@@ -281,6 +304,7 @@
     {
       "id": "mlb-137",
       "name": "San Francisco Giants",
+      "nickname": "Giants",
       "league": "MLB",
       "city": "San Francisco",
       "region": "California",
@@ -293,6 +317,7 @@
     {
       "id": "mlb-136",
       "name": "Seattle Mariners",
+      "nickname": "Mariners",
       "league": "MLB",
       "city": "Seattle",
       "region": "Washington",
@@ -305,6 +330,7 @@
     {
       "id": "mlb-138",
       "name": "St. Louis Cardinals",
+      "nickname": "Cardinals",
       "league": "MLB",
       "city": "St. Louis",
       "region": "Missouri",
@@ -317,6 +343,7 @@
     {
       "id": "mlb-139",
       "name": "Tampa Bay Rays",
+      "nickname": "Rays",
       "league": "MLB",
       "city": "St. Petersburg",
       "region": "Florida",
@@ -329,6 +356,7 @@
     {
       "id": "mlb-140",
       "name": "Texas Rangers",
+      "nickname": "Rangers",
       "league": "MLB",
       "city": "Arlington",
       "region": "Texas",
@@ -341,6 +369,7 @@
     {
       "id": "mlb-141",
       "name": "Toronto Blue Jays",
+      "nickname": "Blue Jays",
       "league": "MLB",
       "city": "Toronto",
       "region": "Ontario",
@@ -353,6 +382,7 @@
     {
       "id": "mlb-120",
       "name": "Washington Nationals",
+      "nickname": "Nationals",
       "league": "MLB",
       "city": "Washington",
       "region": "District of Columbia",
@@ -365,6 +395,7 @@
     {
       "id": "mlb-342",
       "name": "Albuquerque Isotopes",
+      "nickname": "Isotopes",
       "league": "Triple-A",
       "city": "Albuquerque",
       "region": "New Mexico",
@@ -377,6 +408,7 @@
     {
       "id": "mlb-422",
       "name": "Buffalo Bisons",
+      "nickname": "Bisons",
       "league": "Triple-A",
       "city": "Buffalo",
       "region": "New York",
@@ -389,6 +421,7 @@
     {
       "id": "mlb-494",
       "name": "Charlotte Knights",
+      "nickname": "Knights",
       "league": "Triple-A",
       "city": "Charlotte",
       "region": "North Carolina",
@@ -401,6 +434,7 @@
     {
       "id": "mlb-445",
       "name": "Columbus Clippers",
+      "nickname": "Clippers",
       "league": "Triple-A",
       "city": "Columbus",
       "region": "Ohio",
@@ -413,6 +447,7 @@
     {
       "id": "mlb-234",
       "name": "Durham Bulls",
+      "nickname": "Bulls",
       "league": "Triple-A",
       "city": "Durham",
       "region": "North Carolina",
@@ -425,6 +460,7 @@
     {
       "id": "mlb-4904",
       "name": "El Paso Chihuahuas",
+      "nickname": "Chihuahuas",
       "league": "Triple-A",
       "city": "El Paso",
       "region": "Texas",
@@ -437,6 +473,7 @@
     {
       "id": "mlb-431",
       "name": "Gwinnett Stripers",
+      "nickname": "Stripers",
       "league": "Triple-A",
       "city": "Lawrenceville",
       "region": "Georgia",
@@ -449,6 +486,7 @@
     {
       "id": "mlb-484",
       "name": "Indianapolis Indians",
+      "nickname": "Indians",
       "league": "Triple-A",
       "city": "Indianapolis",
       "region": "Indiana",
@@ -461,6 +499,7 @@
     {
       "id": "mlb-451",
       "name": "Iowa Cubs",
+      "nickname": "Cubs",
       "league": "Triple-A",
       "city": "Des Moines",
       "region": "Iowa",
@@ -473,6 +512,7 @@
     {
       "id": "mlb-564",
       "name": "Jacksonville Jumbo Shrimp",
+      "nickname": "Jumbo Shrimp",
       "league": "Triple-A",
       "city": "Jacksonville",
       "region": "Florida",
@@ -485,6 +525,7 @@
     {
       "id": "mlb-400",
       "name": "Las Vegas Aviators",
+      "nickname": "Aviators",
       "league": "Triple-A",
       "city": "Las Vegas",
       "region": "Nevada",
@@ -497,6 +538,7 @@
     {
       "id": "mlb-1410",
       "name": "Lehigh Valley IronPigs",
+      "nickname": "IronPigs",
       "league": "Triple-A",
       "city": "Allentown",
       "region": "Pennsylvania",
@@ -509,6 +551,7 @@
     {
       "id": "mlb-416",
       "name": "Louisville Bats",
+      "nickname": "Bats",
       "league": "Triple-A",
       "city": "Louisville",
       "region": "Kentucky",
@@ -521,6 +564,7 @@
     {
       "id": "mlb-235",
       "name": "Memphis Redbirds",
+      "nickname": "Redbirds",
       "league": "Triple-A",
       "city": "Memphis",
       "region": "Tennessee",
@@ -533,6 +577,7 @@
     {
       "id": "mlb-556",
       "name": "Nashville Sounds",
+      "nickname": "Sounds",
       "league": "Triple-A",
       "city": "Nashville",
       "region": "Tennessee",
@@ -545,6 +590,7 @@
     {
       "id": "mlb-568",
       "name": "Norfolk Tides",
+      "nickname": "Tides",
       "league": "Triple-A",
       "city": "Norfolk",
       "region": "Virginia",
@@ -557,6 +603,7 @@
     {
       "id": "mlb-238",
       "name": "Oklahoma City Comets",
+      "nickname": "Comets",
       "league": "Triple-A",
       "city": "Oklahoma City",
       "region": "Oklahoma",
@@ -569,6 +616,7 @@
     {
       "id": "mlb-541",
       "name": "Omaha Storm Chasers",
+      "nickname": "Storm Chasers",
       "league": "Triple-A",
       "city": "Papillion",
       "region": "Nebraska",
@@ -581,6 +629,7 @@
     {
       "id": "mlb-2310",
       "name": "Reno Aces",
+      "nickname": "Aces",
       "league": "Triple-A",
       "city": "Reno",
       "region": "Nevada",
@@ -593,6 +642,7 @@
     {
       "id": "mlb-534",
       "name": "Rochester Red Wings",
+      "nickname": "Red Wings",
       "league": "Triple-A",
       "city": "Rochester",
       "region": "New York",
@@ -605,6 +655,7 @@
     {
       "id": "mlb-102",
       "name": "Round Rock Express",
+      "nickname": "Express",
       "league": "Triple-A",
       "city": "Round Rock",
       "region": "Texas",
@@ -617,6 +668,7 @@
     {
       "id": "mlb-105",
       "name": "Sacramento River Cats",
+      "nickname": "River Cats",
       "league": "Triple-A",
       "city": "Sacramento",
       "region": "California",
@@ -629,6 +681,7 @@
     {
       "id": "mlb-561",
       "name": "Salt Lake Bees",
+      "nickname": "Bees",
       "league": "Triple-A",
       "city": "South Jordan",
       "region": "Utah",
@@ -641,6 +694,7 @@
     {
       "id": "mlb-531",
       "name": "Scranton/Wilkes-Barre RailRiders",
+      "nickname": "RailRiders",
       "league": "Triple-A",
       "city": "Moosic",
       "region": "Pennsylvania",
@@ -653,6 +707,7 @@
     {
       "id": "mlb-1960",
       "name": "St. Paul Saints",
+      "nickname": "Saints",
       "league": "Triple-A",
       "city": "St. Paul",
       "region": "Minnesota",
@@ -665,6 +720,7 @@
     {
       "id": "mlb-5434",
       "name": "Sugar Land Space Cowboys",
+      "nickname": "Space Cowboys",
       "league": "Triple-A",
       "city": "Sugar Land",
       "region": "Texas",
@@ -677,6 +733,7 @@
     {
       "id": "mlb-552",
       "name": "Syracuse Mets",
+      "nickname": "Mets",
       "league": "Triple-A",
       "city": "Syracuse",
       "region": "New York",
@@ -689,6 +746,7 @@
     {
       "id": "mlb-529",
       "name": "Tacoma Rainiers",
+      "nickname": "Rainiers",
       "league": "Triple-A",
       "city": "Tacoma",
       "region": "Washington",
@@ -701,6 +759,7 @@
     {
       "id": "mlb-512",
       "name": "Toledo Mud Hens",
+      "nickname": "Mud Hens",
       "league": "Triple-A",
       "city": "Toledo",
       "region": "Ohio",
@@ -713,6 +772,7 @@
     {
       "id": "mlb-533",
       "name": "Worcester Red Sox",
+      "nickname": "Red Sox",
       "league": "Triple-A",
       "city": "Worcester",
       "region": "Massachusetts",
@@ -725,6 +785,7 @@
     {
       "id": "mlb-402",
       "name": "Akron RubberDucks",
+      "nickname": "RubberDucks",
       "league": "Double-A",
       "city": "Akron",
       "region": "Ohio",
@@ -737,6 +798,7 @@
     {
       "id": "mlb-452",
       "name": "Altoona Curve",
+      "nickname": "Curve",
       "league": "Double-A",
       "city": "Altoona",
       "region": "Pennsylvania",
@@ -749,6 +811,7 @@
     {
       "id": "mlb-5368",
       "name": "Amarillo Sod Poodles",
+      "nickname": "Sod Poodles",
       "league": "Double-A",
       "city": "Amarillo",
       "region": "Texas",
@@ -761,6 +824,7 @@
     {
       "id": "mlb-574",
       "name": "Arkansas Travelers",
+      "nickname": "Travelers",
       "league": "Double-A",
       "city": "North Little Rock",
       "region": "Arkansas",
@@ -773,6 +837,7 @@
     {
       "id": "mlb-5015",
       "name": "Biloxi Shuckers",
+      "nickname": "Shuckers",
       "league": "Double-A",
       "city": "Biloxi",
       "region": "Mississippi",
@@ -785,6 +850,7 @@
     {
       "id": "mlb-505",
       "name": "Binghamton Rumble Ponies",
+      "nickname": "Rumble Ponies",
       "league": "Double-A",
       "city": "Binghamton",
       "region": "New York",
@@ -797,6 +863,7 @@
     {
       "id": "mlb-247",
       "name": "Birmingham Barons",
+      "nickname": "Barons",
       "league": "Double-A",
       "city": "Birmingham",
       "region": "Alabama",
@@ -809,6 +876,7 @@
     {
       "id": "mlb-498",
       "name": "Chattanooga Lookouts",
+      "nickname": "Lookouts",
       "league": "Double-A",
       "city": "Chattanooga",
       "region": "Tennessee",
@@ -821,6 +889,7 @@
     {
       "id": "mlb-418",
       "name": "Chesapeake Baysox",
+      "nickname": "Baysox",
       "league": "Double-A",
       "city": "Bowie",
       "region": "Maryland",
@@ -833,6 +902,7 @@
     {
       "id": "mlb-6325",
       "name": "Columbus Clingstones",
+      "nickname": "Clingstones",
       "league": "Double-A",
       "city": "Columbus",
       "region": "Georgia",
@@ -845,6 +915,7 @@
     {
       "id": "mlb-482",
       "name": "Corpus Christi Hooks",
+      "nickname": "Hooks",
       "league": "Double-A",
       "city": "Corpus Christi",
       "region": "Texas",
@@ -857,6 +928,7 @@
     {
       "id": "mlb-106",
       "name": "Erie SeaWolves",
+      "nickname": "SeaWolves",
       "league": "Double-A",
       "city": "Erie",
       "region": "Pennsylvania",
@@ -869,6 +941,7 @@
     {
       "id": "mlb-540",
       "name": "Frisco RoughRiders",
+      "nickname": "RoughRiders",
       "league": "Double-A",
       "city": "Frisco",
       "region": "Texas",
@@ -881,6 +954,7 @@
     {
       "id": "mlb-547",
       "name": "Harrisburg Senators",
+      "nickname": "Senators",
       "league": "Double-A",
       "city": "Harrisburg",
       "region": "Pennsylvania",
@@ -893,6 +967,7 @@
     {
       "id": "mlb-538",
       "name": "Hartford Yard Goats",
+      "nickname": "Yard Goats",
       "league": "Double-A",
       "city": "Hartford",
       "region": "Connecticut",
@@ -905,6 +980,7 @@
     {
       "id": "mlb-553",
       "name": "Knoxville Smokies",
+      "nickname": "Smokies",
       "league": "Double-A",
       "city": "Knoxville",
       "region": "Tennessee",
@@ -917,6 +993,7 @@
     {
       "id": "mlb-237",
       "name": "Midland RockHounds",
+      "nickname": "RockHounds",
       "league": "Double-A",
       "city": "Midland",
       "region": "Texas",
@@ -929,6 +1006,7 @@
     {
       "id": "mlb-421",
       "name": "Montgomery Biscuits",
+      "nickname": "Biscuits",
       "league": "Double-A",
       "city": "Montgomery",
       "region": "Alabama",
@@ -941,6 +1019,7 @@
     {
       "id": "mlb-463",
       "name": "New Hampshire Fisher Cats",
+      "nickname": "Fisher Cats",
       "league": "Double-A",
       "city": "Manchester",
       "region": "New Hampshire",
@@ -953,6 +1032,7 @@
     {
       "id": "mlb-1350",
       "name": "Northwest Arkansas Naturals",
+      "nickname": "Naturals",
       "league": "Double-A",
       "city": "Springdale",
       "region": "Arkansas",
@@ -965,6 +1045,7 @@
     {
       "id": "mlb-4124",
       "name": "Pensacola Blue Wahoos",
+      "nickname": "Blue Wahoos",
       "league": "Double-A",
       "city": "Pensacola",
       "region": "Florida",
@@ -977,6 +1058,7 @@
     {
       "id": "mlb-546",
       "name": "Portland Sea Dogs",
+      "nickname": "Sea Dogs",
       "league": "Double-A",
       "city": "Portland",
       "region": "Maine",
@@ -989,6 +1071,7 @@
     {
       "id": "mlb-522",
       "name": "Reading Fightin Phils",
+      "nickname": "Fightin Phils",
       "league": "Double-A",
       "city": "Reading",
       "region": "Pennsylvania",
@@ -1001,6 +1084,7 @@
     {
       "id": "mlb-3410",
       "name": "Richmond Flying Squirrels",
+      "nickname": "Flying Squirrels",
       "league": "Double-A",
       "city": "Richmond",
       "region": "Virginia",
@@ -1013,6 +1097,7 @@
     {
       "id": "mlb-559",
       "name": "Rocket City Trash Pandas",
+      "nickname": "Trash Pandas",
       "league": "Double-A",
       "city": "Madison",
       "region": "Alabama",
@@ -1025,6 +1110,7 @@
     {
       "id": "mlb-510",
       "name": "San Antonio Missions",
+      "nickname": "Missions",
       "league": "Double-A",
       "city": "San Antonio",
       "region": "Texas",
@@ -1037,6 +1123,7 @@
     {
       "id": "mlb-1956",
       "name": "Somerset Patriots",
+      "nickname": "Patriots",
       "league": "Double-A",
       "city": "Bridgewater",
       "region": "New Jersey",
@@ -1049,6 +1136,7 @@
     {
       "id": "mlb-440",
       "name": "Springfield Cardinals",
+      "nickname": "Cardinals",
       "league": "Double-A",
       "city": "Springfield",
       "region": "Missouri",
@@ -1061,6 +1149,7 @@
     {
       "id": "mlb-260",
       "name": "Tulsa Drillers",
+      "nickname": "Drillers",
       "league": "Double-A",
       "city": "Tulsa",
       "region": "Oklahoma",
@@ -1073,6 +1162,7 @@
     {
       "id": "mlb-3898",
       "name": "Wichita Wind Surge",
+      "nickname": "Wind Surge",
       "league": "Double-A",
       "city": "Wichita",
       "region": "Kansas",
@@ -1085,6 +1175,7 @@
     {
       "id": "mlb-573",
       "name": "Asheville Tourists",
+      "nickname": "Tourists",
       "league": "High-A",
       "city": "Asheville",
       "region": "North Carolina",
@@ -1097,6 +1188,7 @@
     {
       "id": "mlb-554",
       "name": "Beloit Sky Carp",
+      "nickname": "Sky Carp",
       "league": "High-A",
       "city": "Beloit",
       "region": "Wisconsin",
@@ -1109,6 +1201,7 @@
     {
       "id": "mlb-2498",
       "name": "Bowling Green Hot Rods",
+      "nickname": "Hot Rods",
       "league": "High-A",
       "city": "Bowling Green",
       "region": "Kentucky",
@@ -1121,6 +1214,7 @@
     {
       "id": "mlb-453",
       "name": "Brooklyn Cyclones",
+      "nickname": "Cyclones",
       "league": "High-A",
       "city": "Brooklyn",
       "region": "New York",
@@ -1133,6 +1227,7 @@
     {
       "id": "mlb-492",
       "name": "Cedar Rapids Kernels",
+      "nickname": "Kernels",
       "league": "High-A",
       "city": "Cedar Rapids",
       "region": "Iowa",
@@ -1145,6 +1240,7 @@
     {
       "id": "mlb-459",
       "name": "Dayton Dragons",
+      "nickname": "Dragons",
       "league": "High-A",
       "city": "Dayton",
       "region": "Ohio",
@@ -1157,6 +1253,7 @@
     {
       "id": "mlb-461",
       "name": "Eugene Emeralds",
+      "nickname": "Emeralds",
       "league": "High-A",
       "city": "Eugene",
       "region": "Oregon",
@@ -1169,6 +1266,7 @@
     {
       "id": "mlb-403",
       "name": "Everett AquaSox",
+      "nickname": "AquaSox",
       "league": "High-A",
       "city": "Everett",
       "region": "Washington",
@@ -1181,6 +1279,7 @@
     {
       "id": "mlb-584",
       "name": "Fort Wayne TinCaps",
+      "nickname": "TinCaps",
       "league": "High-A",
       "city": "Fort Wayne",
       "region": "Indiana",
@@ -1193,6 +1292,7 @@
     {
       "id": "mlb-493",
       "name": "Frederick Keys",
+      "nickname": "Keys",
       "league": "High-A",
       "city": "Frederick",
       "region": "Maryland",
@@ -1205,6 +1305,7 @@
     {
       "id": "mlb-456",
       "name": "Great Lakes Loons",
+      "nickname": "Loons",
       "league": "High-A",
       "city": "Midland",
       "region": "Michigan",
@@ -1217,6 +1318,7 @@
     {
       "id": "mlb-477",
       "name": "Greensboro Grasshoppers",
+      "nickname": "Grasshoppers",
       "league": "High-A",
       "city": "Greensboro",
       "region": "North Carolina",
@@ -1229,6 +1331,7 @@
     {
       "id": "mlb-428",
       "name": "Greenville Drive",
+      "nickname": "Drive",
       "league": "High-A",
       "city": "Greenville",
       "region": "South Carolina",
@@ -1241,6 +1344,7 @@
     {
       "id": "mlb-419",
       "name": "Hillsboro Hops",
+      "nickname": "Hops",
       "league": "High-A",
       "city": "Hillsboro",
       "region": "Oregon",
@@ -1253,6 +1357,7 @@
     {
       "id": "mlb-6324",
       "name": "Hub City Spartanburgers",
+      "nickname": "Spartanburgers",
       "league": "High-A",
       "city": "Spartanburg",
       "region": "South Carolina",
@@ -1265,6 +1370,7 @@
     {
       "id": "mlb-537",
       "name": "Hudson Valley Renegades",
+      "nickname": "Renegades",
       "league": "High-A",
       "city": "Wappingers Falls",
       "region": "New York",
@@ -1277,6 +1383,7 @@
     {
       "id": "mlb-427",
       "name": "Jersey Shore BlueClaws",
+      "nickname": "BlueClaws",
       "league": "High-A",
       "city": "Lakewood",
       "region": "New Jersey",
@@ -1289,6 +1396,7 @@
     {
       "id": "mlb-437",
       "name": "Lake County Captains",
+      "nickname": "Captains",
       "league": "High-A",
       "city": "Eastlake",
       "region": "Ohio",
@@ -1301,6 +1409,7 @@
     {
       "id": "mlb-499",
       "name": "Lansing Lugnuts",
+      "nickname": "Lugnuts",
       "league": "High-A",
       "city": "Lansing",
       "region": "Michigan",
@@ -1313,6 +1422,7 @@
     {
       "id": "mlb-443",
       "name": "Peoria Chiefs",
+      "nickname": "Chiefs",
       "league": "High-A",
       "city": "Peoria",
       "region": "Illinois",
@@ -1325,6 +1435,7 @@
     {
       "id": "mlb-565",
       "name": "Quad Cities River Bandits",
+      "nickname": "River Bandits",
       "league": "High-A",
       "city": "Davenport",
       "region": "Iowa",
@@ -1337,6 +1448,7 @@
     {
       "id": "mlb-432",
       "name": "Rome Emperors",
+      "nickname": "Emperors",
       "league": "High-A",
       "city": "Rome",
       "region": "Georgia",
@@ -1349,6 +1461,7 @@
     {
       "id": "mlb-550",
       "name": "South Bend Cubs",
+      "nickname": "Cubs",
       "league": "High-A",
       "city": "South Bend",
       "region": "Indiana",
@@ -1361,6 +1474,7 @@
     {
       "id": "mlb-486",
       "name": "Spokane Indians",
+      "nickname": "Indians",
       "league": "High-A",
       "city": "Spokane",
       "region": "Washington",
@@ -1373,6 +1487,7 @@
     {
       "id": "mlb-460",
       "name": "Tri-City Dust Devils",
+      "nickname": "Dust Devils",
       "league": "High-A",
       "city": "Pasco",
       "region": "Washington",
@@ -1385,6 +1500,7 @@
     {
       "id": "mlb-435",
       "name": "Vancouver Canadians",
+      "nickname": "Canadians",
       "league": "High-A",
       "city": "Vancouver",
       "region": "British Columbia",
@@ -1397,6 +1513,7 @@
     {
       "id": "mlb-582",
       "name": "West Michigan Whitecaps",
+      "nickname": "Whitecaps",
       "league": "High-A",
       "city": "Comstock Park",
       "region": "Michigan",
@@ -1409,6 +1526,7 @@
     {
       "id": "mlb-426",
       "name": "Wilmington Blue Rocks",
+      "nickname": "Blue Rocks",
       "league": "High-A",
       "city": "Wilmington",
       "region": "Delaware",
@@ -1421,6 +1539,7 @@
     {
       "id": "mlb-580",
       "name": "Winston-Salem Dash",
+      "nickname": "Dash",
       "league": "High-A",
       "city": "Winston-Salem",
       "region": "North Carolina",
@@ -1433,6 +1552,7 @@
     {
       "id": "mlb-572",
       "name": "Wisconsin Timber Rattlers",
+      "nickname": "Timber Rattlers",
       "league": "High-A",
       "city": "Appleton",
       "region": "Wisconsin",
@@ -1445,6 +1565,7 @@
     {
       "id": "mlb-478",
       "name": "Augusta GreenJackets",
+      "nickname": "GreenJackets",
       "league": "Single-A",
       "city": "North Augusta",
       "region": "South Carolina",
@@ -1457,6 +1578,7 @@
     {
       "id": "mlb-3390",
       "name": "Bradenton Marauders",
+      "nickname": "Marauders",
       "league": "Single-A",
       "city": "Bradenton",
       "region": "Florida",
@@ -1469,6 +1591,7 @@
     {
       "id": "mlb-233",
       "name": "Charleston RiverDogs",
+      "nickname": "RiverDogs",
       "league": "Single-A",
       "city": "Charleston",
       "region": "South Carolina",
@@ -1481,6 +1604,7 @@
     {
       "id": "mlb-566",
       "name": "Clearwater Threshers",
+      "nickname": "Threshers",
       "league": "Single-A",
       "city": "Clearwater",
       "region": "Florida",
@@ -1493,6 +1617,7 @@
     {
       "id": "mlb-3705",
       "name": "Columbia Fireflies",
+      "nickname": "Fireflies",
       "league": "Single-A",
       "city": "Columbia",
       "region": "South Carolina",
@@ -1505,6 +1630,7 @@
     {
       "id": "mlb-450",
       "name": "Daytona Tortugas",
+      "nickname": "Tortugas",
       "league": "Single-A",
       "city": "Daytona Beach",
       "region": "Florida",
@@ -1517,6 +1643,7 @@
     {
       "id": "mlb-548",
       "name": "Delmarva Shorebirds",
+      "nickname": "Shorebirds",
       "league": "Single-A",
       "city": "Salisbury",
       "region": "Maryland",
@@ -1529,6 +1656,7 @@
     {
       "id": "mlb-424",
       "name": "Dunedin Blue Jays",
+      "nickname": "Blue Jays",
       "league": "Single-A",
       "city": "Dunedin",
       "region": "Florida",
@@ -1541,6 +1669,7 @@
     {
       "id": "mlb-3712",
       "name": "Fayetteville Woodpeckers",
+      "nickname": "Woodpeckers",
       "league": "Single-A",
       "city": "Fayetteville",
       "region": "North Carolina",
@@ -1553,6 +1682,7 @@
     {
       "id": "mlb-509",
       "name": "Fort Myers Mighty Mussels",
+      "nickname": "Mighty Mussels",
       "league": "Single-A",
       "city": "Fort Myers",
       "region": "Florida",
@@ -1565,6 +1695,7 @@
     {
       "id": "mlb-436",
       "name": "Fredericksburg Nationals",
+      "nickname": "Nationals",
       "league": "Single-A",
       "city": "Fredericksburg",
       "region": "Virginia",
@@ -1577,6 +1708,7 @@
     {
       "id": "mlb-259",
       "name": "Fresno Grizzlies",
+      "nickname": "Grizzlies",
       "league": "Single-A",
       "city": "Fresno",
       "region": "California",
@@ -1589,6 +1721,7 @@
     {
       "id": "mlb-448",
       "name": "Hickory Crawdads",
+      "nickname": "Crawdads",
       "league": "Single-A",
       "city": "Hickory",
       "region": "North Carolina",
@@ -1601,6 +1734,7 @@
     {
       "id": "mlb-481",
       "name": "Hill City Howlers",
+      "nickname": "Howlers",
       "league": "Single-A",
       "city": "Lynchburg",
       "region": "Virginia",
@@ -1613,6 +1747,7 @@
     {
       "id": "mlb-401",
       "name": "Inland Empire 66ers",
+      "nickname": "66ers",
       "league": "Single-A",
       "city": "San Bernardino",
       "region": "California",
@@ -1625,6 +1760,7 @@
     {
       "id": "mlb-479",
       "name": "Jupiter Hammerheads",
+      "nickname": "Hammerheads",
       "league": "Single-A",
       "city": "Jupiter",
       "region": "Florida",
@@ -1637,6 +1773,7 @@
     {
       "id": "mlb-487",
       "name": "Kannapolis Cannon Ballers",
+      "nickname": "Cannon Ballers",
       "league": "Single-A",
       "city": "Kannapolis",
       "region": "North Carolina",
@@ -1649,6 +1786,7 @@
     {
       "id": "mlb-103",
       "name": "Lake Elsinore Storm",
+      "nickname": "Storm",
       "league": "Single-A",
       "city": "Lake Elsinore",
       "region": "California",
@@ -1661,6 +1799,7 @@
     {
       "id": "mlb-570",
       "name": "Lakeland Flying Tigers",
+      "nickname": "Flying Tigers",
       "league": "Single-A",
       "city": "Lakeland",
       "region": "Florida",
@@ -1673,6 +1812,7 @@
     {
       "id": "mlb-521",
       "name": "Myrtle Beach Pelicans",
+      "nickname": "Pelicans",
       "league": "Single-A",
       "city": "Myrtle Beach",
       "region": "South Carolina",
@@ -1685,6 +1825,7 @@
     {
       "id": "mlb-6482",
       "name": "Ontario Tower Buzzers",
+      "nickname": "Tower Buzzers",
       "league": "Single-A",
       "city": "Ontario",
       "region": "California",
@@ -1697,6 +1838,7 @@
     {
       "id": "mlb-279",
       "name": "Palm Beach Cardinals",
+      "nickname": "Cardinals",
       "league": "Single-A",
       "city": "Jupiter",
       "region": "Florida",
@@ -1709,6 +1851,7 @@
     {
       "id": "mlb-526",
       "name": "Rancho Cucamonga Quakes",
+      "nickname": "Quakes",
       "league": "Single-A",
       "city": "Rancho Cucamonga",
       "region": "California",
@@ -1721,6 +1864,7 @@
     {
       "id": "mlb-414",
       "name": "Salem RidgeYaks",
+      "nickname": "RidgeYaks",
       "league": "Single-A",
       "city": "Salem",
       "region": "Virginia",
@@ -1733,6 +1877,7 @@
     {
       "id": "mlb-476",
       "name": "San Jose Giants",
+      "nickname": "Giants",
       "league": "Single-A",
       "city": "San Jose",
       "region": "California",
@@ -1745,6 +1890,7 @@
     {
       "id": "mlb-507",
       "name": "St. Lucie Mets",
+      "nickname": "Mets",
       "league": "Single-A",
       "city": "Port St. Lucie",
       "region": "Florida",
@@ -1757,6 +1903,7 @@
     {
       "id": "mlb-524",
       "name": "Stockton Ports",
+      "nickname": "Ports",
       "league": "Single-A",
       "city": "Stockton",
       "region": "California",
@@ -1769,6 +1916,7 @@
     {
       "id": "mlb-587",
       "name": "Tampa Tarpons",
+      "nickname": "Tarpons",
       "league": "Single-A",
       "city": "Tampa",
       "region": "Florida",
@@ -1781,6 +1929,7 @@
     {
       "id": "mlb-516",
       "name": "Visalia Rawhide",
+      "nickname": "Rawhide",
       "league": "Single-A",
       "city": "Visalia",
       "region": "California",
@@ -1793,6 +1942,7 @@
     {
       "id": "mlb-249",
       "name": "Wilson Warbirds",
+      "nickname": "Warbirds",
       "league": "Single-A",
       "city": "Wilson",
       "region": "North Carolina",

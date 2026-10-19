@@ -39,7 +39,7 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
         </section>
       )}
 
-      <SponsorBoard items={desk.board} city={club.city} team={club.name} />
+      <SponsorBoard items={desk.board} city={club.city} team={club.nickname} />
       <PartnerTable partners={desk.partners} venue={club.venue} />
       {plan && <SeasonCalendar entries={plan.entries} />}
     </div>

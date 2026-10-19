@@ -12,7 +12,7 @@ import type { QlooBrand } from "../sponsors/categories";
 import { rankSponsors } from "../sponsors/rank";
 
 export interface ClubDesk {
-  club: { id: string; name: string; league: string; city: string; region: string | null; venue: string | null; market: string; hasFanSignal: boolean };
+  club: { id: string; name: string; nickname: string; league: string; city: string; region: string | null; venue: string | null; market: string; hasFanSignal: boolean };
   board: BoardItem[];
   partners: Partner[];
   plan: SeasonPlan | null;
@@ -39,7 +39,7 @@ function budgetFrom(mix: PromoMix | undefined, tier: "MLB" | "MiLB"): Budget {
   return { fireworks: nights("fireworks"), bobblehead: nights("bobblehead"), giveaway: nights("giveaway"), theme: nights("theme") };
 }
 
-type ClubRow = { id: string; name: string; league: string; city: string; region: string | null; venue: string | null; market: string; lat: number | null; lng: number | null; team_entity_id: string | null };
+type ClubRow = { id: string; name: string; nickname: string | null; league: string; city: string; region: string | null; venue: string | null; market: string; lat: number | null; lng: number | null; team_entity_id: string | null };
 type QlooRow = { fetched_at: Date; city_brands: QlooBrand[]; fan_brands: QlooBrand[]; partners: QlooPlace[] };
 
 export interface DeskOptions {
@@ -51,7 +51,7 @@ export interface DeskOptions {
 
 export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<ClubDesk | null> {
   const db = sql();
-  const [club] = (await db`select id, name, league, city, region, venue, market, lat, lng, team_entity_id from clubs where id = ${id}`) as ClubRow[];
+  const [club] = (await db`select id, name, nickname, league, city, region, venue, market, lat, lng, team_entity_id from clubs where id = ${id}`) as ClubRow[];
   if (!club) return null;
   const [qloo] = (await db`select fetched_at, city_brands, fan_brands, partners from club_qloo where club_id = ${id}`) as QlooRow[];
   const [ai] = (await db`select names from club_ai_prospects where club_id = ${id}`) as { names: string[] }[];
@@ -72,7 +72,7 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   const open = dates.filter((d, i) => i === 0 || !skip.has(Number(d.date.slice(5, 7))));
 
   return {
-    club: { id: club.id, name: club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
+    club: { id: club.id, name: club.name, nickname: club.nickname ?? club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
     board: buildBoard(ai?.names ?? [], qlooBoard),
     partners: club.lat != null && club.lng != null && qloo ? toPartners(qloo.partners, { lat: club.lat, lng: club.lng }) : [],
     plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: d.day_night })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
