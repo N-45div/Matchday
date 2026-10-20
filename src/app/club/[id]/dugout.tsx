@@ -4,8 +4,18 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, getToolName, isToolUIPart, type UIMessage } from "ai";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { Baseball } from "../../ui";
+import { agentPlanFrom, planStore } from "./plan-store";
 
 const noop = () => () => {};
+
+/** Shows the agent's plan on the plan board and brings the board into view. */
+function showOnBoard(output: unknown, clubId: string, scroll: boolean) {
+  const plan = agentPlanFrom(output, clubId);
+  if (!plan) return false;
+  planStore.showAgent(plan);
+  if (scroll) document.getElementById("plan-h")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+}
 
 const PLAYS: Record<string, [running: string, done: string]> = {
   find_clubs: ["Finding the club", "Found the club"],
@@ -24,7 +34,7 @@ function readable(error: Error): string {
   return error.message && error.message.length < 200 ? error.message : "The desk couldn't answer just now. Please try again.";
 }
 
-function Message({ message }: { message: UIMessage }) {
+function Message({ message, clubId, onBoard }: { message: UIMessage; clubId: string; onBoard: () => void }) {
   if (message.role === "user") {
     return (
       <p className="rise ml-auto w-fit max-w-[85%] rounded-[18px] rounded-br-sm border-2 border-ink bg-accent px-3.5 py-2.5 text-[15px] text-white">
@@ -43,10 +53,18 @@ function Message({ message }: { message: UIMessage }) {
           {plays.map((part) => {
             const [running, done] = PLAYS[getToolName(part)] ?? ["Working", "Done"];
             const finished = part.state === "output-available" || part.state === "output-error";
+            const replan = getToolName(part) === "plan_season" && part.state === "output-available" && agentPlanFrom(part.output, clubId);
             return (
-              <span key={part.toolCallId} className="pop inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-ink bg-bg px-2.5 py-1 text-xs font-bold">
-                <span className={`h-2 w-2 rounded-full ${finished ? "bg-grass" : "animate-pulse bg-accent"}`} />
-                {finished ? done : `${running}…`}
+              <span key={part.toolCallId} className="inline-flex flex-wrap items-center gap-1.5">
+                <span className="pop inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-ink bg-bg px-2.5 py-1 text-xs font-bold">
+                  <span className={`h-2 w-2 rounded-full ${finished ? "bg-grass" : "animate-pulse bg-accent"}`} />
+                  {finished ? done : `${running}…`}
+                </span>
+                {replan && (
+                  <button type="button" onClick={() => showOnBoard(part.output, clubId, true) && onBoard()} className="press pop rounded-full border-[1.5px] border-ink bg-sun px-2.5 py-1 text-xs font-extrabold">
+                    See it on the board
+                  </button>
+                )}
               </span>
             );
           })}
@@ -59,9 +77,17 @@ function Message({ message }: { message: UIMessage }) {
 
 export function Dugout({ clubId, clubName, suggestions }: { clubId: string; clubName: string; suggestions: string[] }) {
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/agent", body: { clubId, clubName } }), [clubId, clubName]);
-  const { messages, sendMessage, status, error, stop } = useChat({ transport });
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
+  // A finished re-plan goes straight onto the plan board; on a phone the sheet stays open until the user asks to see it.
+  const { messages, sendMessage, status, error, stop } = useChat({
+    transport,
+    onFinish: ({ message }) => {
+      for (const part of message.parts) {
+        if (isToolUIPart(part) && getToolName(part) === "plan_season" && part.state === "output-available") showOnBoard(part.output, clubId, false);
+      }
+    },
+  });
   const origin = useSyncExternalStore(noop, () => window.location.origin, () => "");
   const busy = status === "submitted" || status === "streaming";
 
@@ -105,7 +131,7 @@ export function Dugout({ clubId, clubName, suggestions }: { clubId: string; club
         </div>
         <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto p-4" aria-live="polite">
           <p className="text-[13px] text-muted">An agent with the desk&apos;s five tools. Every name and number comes from a tool call.</p>
-          {messages.map((m) => <Message key={m.id} message={m} />)}
+          {messages.map((m) => <Message key={m.id} message={m} clubId={clubId} onBoard={() => setOpen(false)} />)}
           {status === "submitted" && <span className="shimmer h-10 w-2/3 rounded-[18px]" />}
           {error && <p className="rounded-xl border-2 border-ink bg-warn-soft px-3.5 py-2.5 text-sm text-warn">{readable(error)}</p>}
           {!busy && (
