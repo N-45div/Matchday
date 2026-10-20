@@ -45,6 +45,8 @@ export interface Partner {
   priceLevel: number | null;
   rating: number | null;
   distanceKm: number | null;
+  /** Compass bearing from the ballpark in degrees (0 = north, 90 = east), for the radar map. */
+  bearing: number | null;
   gameNightDays: string[];
   fanRank: number;
 }
@@ -86,6 +88,12 @@ const drinky = (text: string) => DRINKS.test(text.replace(BBQ, "bbq").replace(FO
 
 export function isDrinkPlace(place: QlooPlace): boolean {
   return drinky(place.name) || placeTags(place).some(drinky);
+}
+
+export function bearing(a: Venue, b: { lat: number; lon: number }): number {
+  const east = (b.lon - a.lng) * Math.cos((a.lat * Math.PI) / 180);
+  const north = b.lat - a.lat;
+  return Math.round(((Math.atan2(east, north) * 180) / Math.PI + 360) % 360);
 }
 
 export function distanceKm(a: Venue, b: { lat: number; lon: number }): number {
@@ -135,6 +143,7 @@ export function toPartners(places: QlooPlace[], venue: Venue): Partner[] {
       priceLevel: p.price_level ?? null,
       rating: p.business_rating != null ? Math.round(p.business_rating * 10) / 10 : null,
       distanceKm: place.location ? distanceKm(venue, place.location) : null,
+      bearing: place.location ? bearing(venue, place.location) : null,
       gameNightDays: DAYS.filter((d) => openDuring(p.hours, d)),
       fanRank: rank + 1,
     });

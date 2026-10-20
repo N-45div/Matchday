@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { distanceKm, isDrinkPlace, kindOf, openDuring, partnerQuery, toPartners, type QlooPlace } from "./partners";
+import { bearing, distanceKm, isDrinkPlace, kindOf, openDuring, partnerQuery, toPartners, type QlooPlace } from "./partners";
 
 const venue = { lat: 43.1583, lng: -77.6197 };
 const tag = (name: string) => ({ id: `urn:tag:genre:place:${name.toLowerCase().replace(/ /g, "_")}`, name });
@@ -59,5 +59,14 @@ describe("toPartners", () => {
     expect(partners[0]).toMatchObject({ kind: "Pizza", phone: "555", gameNightDays: ["friday", "saturday"], fanRank: 1 });
     expect(partners[0].distanceKm).toBeCloseTo(distanceKm(venue, { lat: 43.16, lon: -77.61 }));
     expect(partners[1].fanRank).toBe(4);
+  });
+});
+
+describe("bearing", () => {
+  it("reads compass directions from the ballpark", () => {
+    expect(bearing(venue, { lat: venue.lat + 0.01, lon: venue.lng })).toBe(0);
+    expect(bearing(venue, { lat: venue.lat, lon: venue.lng + 0.01 })).toBe(90);
+    expect(bearing(venue, { lat: venue.lat - 0.01, lon: venue.lng })).toBe(180);
+    expect(bearing(venue, { lat: venue.lat, lon: venue.lng - 0.01 })).toBe(270);
   });
 });
