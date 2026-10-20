@@ -1,9 +1,10 @@
 // Precomputes Qloo data for every club so the app never waits on cold API calls:
 //   - the club's own Qloo entity (exact name match only)
 //   - city brand pool and city + fan-base brand pool (300 each)
-//   - food and drink partners within 3 km of the ballpark
+//   - family food partners within 3 km of the ballpark (no bars or breweries)
 // Output: data/cache/clubs/<team id>.json (gitignored: Qloo output is never committed).
-// Run: npx --yes tsx scripts/precompute.mts [--force] [team id ...]
+// Run: npx --yes tsx scripts/precompute.mts [--force] [--partners] [team id ...]
+// --partners re-fetches only the partner list of clubs already cached, keeping their brand pools.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { QlooClient } from "../src/lib/qloo/client";
 import { partnerQuery } from "../src/lib/partners/partners";
@@ -18,6 +19,7 @@ const get = <T,>(path: string, params: Record<string, unknown>) => client.get<T>
 
 const args = process.argv.slice(2);
 const force = args.includes("--force");
+const partnersOnly = args.includes("--partners");
 const only = new Set(args.filter((a) => !a.startsWith("--")));
 const teams: Team[] = JSON.parse(readFileSync("data/teams/baseball.json", "utf8")).teams.filter((t: Team) => !only.size || only.has(t.id));
 const OUT = "data/cache/clubs";
@@ -39,7 +41,21 @@ async function brandPool(extra: Record<string, unknown>, pages = 6) {
   return out;
 }
 
+const partnersOf = async (team: Team, teamEntityId: string | null) =>
+  team.lat != null && team.lng != null ? ((await get<any>("/v2/insights", partnerQuery({ lat: team.lat, lng: team.lng }, teamEntityId, 3000, 50))).results?.entities ?? []).map(slimPlace) : [];
+
+async function refreshPartners(team: Team) {
+  const file = `${OUT}/${team.id}.json`;
+  if (!existsSync(file)) return "not cached";
+  const cached = JSON.parse(readFileSync(file, "utf8"));
+  cached.partners = await partnersOf(team, cached.teamEntityId);
+  cached.partnersFetchedAt = new Date().toISOString();
+  writeFileSync(file, JSON.stringify(cached));
+  return `partners ${cached.partners.length}`;
+}
+
 async function precompute(team: Team) {
+  if (partnersOnly) return refreshPartners(team);
   const file = `${OUT}/${team.id}.json`;
   if (!force && existsSync(file)) return "cached";
   const location = team.market;
@@ -47,9 +63,7 @@ async function precompute(team: Team) {
   const teamEntity = hits.find((h: any) => norm(h.name) === norm(team.name)) ?? null;
   const city = await brandPool({ "signal.location.query": location });
   const teamCity = teamEntity ? await brandPool({ "signal.location.query": location, "signal.interests.entities": teamEntity.entity_id }) : [];
-  const partners = team.lat != null && team.lng != null
-    ? ((await get<any>("/v2/insights", partnerQuery({ lat: team.lat, lng: team.lng }, teamEntity?.entity_id))).results?.entities ?? []).map(slimPlace)
-    : [];
+  const partners = await partnersOf(team, teamEntity?.entity_id ?? null);
   if (!city.length) console.log(`  warning: no brands for "${location}"; add a market override in scripts/teams-baseball.mjs`);
   writeFileSync(file, JSON.stringify({ team: team.id, location, teamEntityId: teamEntity?.entity_id ?? null, fetchedAt: new Date().toISOString(), city, teamCity, partners }));
   return `city ${city.length}, fans ${teamCity.length}, partners ${partners.length}`;
