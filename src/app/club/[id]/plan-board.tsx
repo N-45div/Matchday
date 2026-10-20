@@ -4,8 +4,10 @@ import { useMemo, useState } from "react";
 import type { Lifts } from "@/lib/plan/season";
 import type { NightView, PlanView } from "@/lib/plan/view";
 import { PROMO_STYLE, type Promo } from "../../ui";
+import { planStore, usePlanStore, type Mode } from "./plan-store";
 
-type Mode = "desk" | "mine";
+const MODE_LABEL: Record<Mode, string> = { mine: "Your 2026 way", desk: "Matchday plan", agent: "Agent's re-plan" };
+const MODE_ON: Record<Mode, string> = { mine: "bg-navy text-white", desk: "bg-accent text-white", agent: "bg-sun text-ink" };
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 const thousands = (n: number) => (n / 1000).toFixed(1);
@@ -33,19 +35,41 @@ function why(night: NightView, promo: Promo | null, lifts: Lifts, tier: "MLB" | 
   }
 }
 
-export function PlanBoard({ view, totals, lifts, tier, counts }: { view: PlanView; totals: { desk: number; mine: number | null }; lifts: Lifts; tier: "MLB" | "MiLB"; counts: [Promo, number][] }) {
-  const [mode, setMode] = useState<Mode>("desk");
+const ORDER: Promo[] = ["fireworks", "bobblehead", "giveaway", "theme", "opening"];
+
+export function PlanBoard({ view, totals, lifts, tier }: { view: PlanView; totals: { desk: number; mine: number | null }; lifts: Lifts; tier: "MLB" | "MiLB" }) {
+  const { mode: chosen, agent } = usePlanStore();
+  const mode: Mode = chosen === "agent" && !agent ? "desk" : chosen;
   const [pick, setPick] = useState(view.bestDate ?? view.nights[0]?.date);
   const hasMine = totals.mine != null;
+  const modes: Mode[] = [...(hasMine ? (["mine"] as const) : []), "desk", ...(agent ? (["agent"] as const) : [])];
   const months = useMemo(() => {
     const byMonth = new Map<string, NightView[]>();
     for (const n of view.nights) byMonth.set(n.date.slice(0, 7), [...(byMonth.get(n.date.slice(0, 7)) ?? []), n]);
     return [...byMonth];
   }, [view.nights]);
+  const agentByDate = useMemo(() => new Map((agent?.nights ?? []).map((n) => [n.date, n])), [agent]);
   const picked = view.nights.find((n) => n.date === pick) ?? null;
-  const slot = (n: NightView) => (mode === "mine" && n.mine ? n.mine : n.desk);
+  const slot = (n: NightView) => {
+    if (mode === "mine" && n.mine) return n.mine;
+    if (mode === "agent") {
+      const a = agentByDate.get(n.date);
+      if (a) return { promo: a.promotion as Promo, fans: a.addedFans };
+      return n.desk.promo === "opening" ? n.desk : { promo: null, fans: 0 };
+    }
+    return n.desk;
+  };
+  // The agent's re-plan by month: its nights plus opening night, which no re-plan moves.
+  const agentMonths = useMemo(() => {
+    if (!agent) return null;
+    const sums = new Map<string, number>();
+    for (const n of view.nights) if (n.desk.promo === "opening") sums.set(n.date.slice(0, 7), (sums.get(n.date.slice(0, 7)) ?? 0) + n.desk.fans);
+    for (const n of agent.nights) sums.set(n.date.slice(0, 7), (sums.get(n.date.slice(0, 7)) ?? 0) + n.addedFans);
+    return sums;
+  }, [agent, view.nights]);
   const pickedSlot = picked ? slot(picked) : null;
-  const gain = totals.mine != null ? totals.desk - totals.mine : null;
+  const [top, base] = mode === "agent" && agent ? [agent.addedFans, agent.mine] : [totals.desk, totals.mine];
+  const gain = base != null ? top - base : null;
   const label = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
 
   return (
@@ -55,17 +79,17 @@ export function PlanBoard({ view, totals, lifts, tier, counts }: { view: PlanVie
           <p className="kicker">2027 promotion plan</p>
           <h2 id="plan-h" className="mt-1 font-display text-[28px] font-extrabold leading-tight tracking-tight sm:text-[32px]">Same nights, better dates</h2>
         </div>
-        {hasMine && (
-          <div role="group" aria-label="Which placement to show" className="inline-flex gap-1 rounded-2xl border-2 border-ink bg-bg p-1">
-            {(["mine", "desk"] as const).map((m) => (
+        {modes.length > 1 && (
+          <div role="group" aria-label="Which placement to show" className="inline-flex flex-wrap gap-1 rounded-2xl border-2 border-ink bg-bg p-1">
+            {modes.map((m) => (
               <button
                 key={m}
                 type="button"
-                onClick={() => setMode(m)}
+                onClick={() => planStore.setMode(m)}
                 aria-pressed={mode === m}
-                className={`min-h-11 rounded-xl px-4 text-[15px] font-bold transition-colors ${mode === m ? (m === "desk" ? "bg-accent text-white" : "bg-navy text-white") : "text-ink hover:bg-surface"}`}
+                className={`min-h-11 rounded-xl px-4 text-[15px] font-bold transition-colors ${mode === m ? MODE_ON[m] : "text-ink hover:bg-surface"} ${m === "agent" ? "pop" : ""}`}
               >
-                {m === "desk" ? "Matchday plan" : "Your 2026 way"}
+                {MODE_LABEL[m]}
               </button>
             ))}
           </div>
@@ -75,12 +99,12 @@ export function PlanBoard({ view, totals, lifts, tier, counts }: { view: PlanVie
       <div className="mt-5 flex items-center justify-between rounded-2xl bg-navy px-4 py-3.5 text-[#f4f7ff] sm:hidden">
         <div>
           <p className="text-[11px] font-bold tracking-[0.12em] text-[#a9bceb]">ADDED FANS, 2027</p>
-          <p className="led text-[40px] leading-tight text-sun">{fmt(totals.desk)}</p>
+          <p className="led text-[40px] leading-tight text-sun">{fmt(mode === "mine" && base != null ? base : top)}</p>
         </div>
-        {totals.mine != null && (
+        {base != null && mode !== "mine" && (
           <div className="text-right">
             <p className="text-[11px] font-bold tracking-[0.12em] text-[#a9bceb]">YOUR WAY</p>
-            <p className="led text-2xl text-led-dim">{fmt(totals.mine)}</p>
+            <p className="led text-2xl text-led-dim">{fmt(base)}</p>
           </div>
         )}
       </div>
@@ -113,23 +137,35 @@ export function PlanBoard({ view, totals, lifts, tier, counts }: { view: PlanVie
               ))}
               <td className="led pop rounded-lg bg-sun px-2 py-2.5 text-center text-[26px] text-navy" style={{ animationDelay: "700ms" }}>{thousands(totals.desk)}</td>
             </tr>
+            {agent && agentMonths && (
+              <tr className={`transition-opacity ${mode === "agent" ? "opacity-100" : "opacity-50"}`}>
+                <th scope="row" className="whitespace-nowrap pr-2 text-left text-xs font-extrabold tracking-[0.08em] text-sun">AGENT</th>
+                {view.months.map((m, i) => (
+                  <td key={`${m.key}-${agent.addedFans}`} className="led roll rounded-lg bg-led px-1 py-2.5 text-center text-2xl text-sun" style={{ animationDelay: `${i * 60}ms` }}>
+                    {thousands(agentMonths.get(m.key) ?? 0)}
+                  </td>
+                ))}
+                <td className="led pop rounded-lg border-2 border-sun bg-led px-2 py-2 text-center text-[26px] text-sun">{thousands(agent.addedFans)}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
       <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
         {gain != null && gain > 0 && (
           <span className="pop rounded-full border-2 border-ink bg-sun px-3 py-1.5 text-sm font-extrabold" style={{ animationDelay: "900ms" }}>
-            +{fmt(gain)} fans · {(totals.desk / Math.max(totals.mine!, 1)).toFixed(1)}×
+            +{fmt(gain)} fans · {(top / Math.max(base!, 1)).toFixed(1)}×
           </span>
         )}
-        <span className="text-[15px] text-muted">{mode === "mine" && view.mineLine ? view.mineLine : view.deskLine}</span>
+        <span className="text-[15px] text-muted">{mode === "agent" && agent ? agent.summary : mode === "mine" && view.mineLine ? view.mineLine : view.deskLine}</span>
       </div>
-      {hasMine && <p className="mt-2 text-xs text-muted">Yellow months: the Matchday plan wins. Both placements use the same nights; only the dates change.</p>}
+      {hasMine && mode !== "agent" && <p className="mt-2 text-xs text-muted">Yellow months: the Matchday plan wins. Both placements use the same nights; only the dates change.</p>}
+      {mode === "agent" && <p className="mt-2 text-xs text-muted">The agent&apos;s re-plan from the dugout, compared with the same nights on your 2026 weekdays.</p>}
 
       <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-display text-[22px] font-extrabold">Season board</h3>
         <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] font-semibold" aria-label="Legend">
-          {counts.map(([kind, n]) => (
+          {ORDER.map((kind) => [kind, view.nights.filter((n) => slot(n).promo === kind).length] as const).filter(([, n]) => n > 0).map(([kind, n]) => (
             <li key={kind} className="inline-flex items-center gap-1.5">
               <span className={`h-3.5 w-3.5 rounded-full border-2 border-ink ${PROMO_STYLE[kind].fill}`} />
               {PROMO_STYLE[kind].label} · {n}

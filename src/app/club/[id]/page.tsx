@@ -4,13 +4,12 @@ import fit2025 from "../../../../data/eval/sponsor-fit-2025.json";
 import lift from "../../../../data/lift/lift.json";
 import { getClubDesk } from "@/lib/data/desk";
 import { planView } from "@/lib/plan/view";
-import { monogram, type Promo } from "../../ui";
+import { monogram } from "../../ui";
 import { Dugout } from "./dugout";
 import { PartnerRadar } from "./partner-radar";
 import { PlanBoard } from "./plan-board";
 import { SponsorHand, type Scout, type SponsorCard } from "./sponsor-hand";
 
-const ORDER: Promo[] = ["fireworks", "bobblehead", "giveaway", "theme", "opening"];
 // The assistant sometimes names a kind of business instead of one ("similar independent restaurants"); those aren't prospects.
 const GENERIC = /\b(similar|various|other local|local (eateries|restaurants|businesses|shops)|style local)\b/i;
 
@@ -39,7 +38,6 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
     }));
   const assistant = desk.board.filter((i) => i.assistantRank != null && !GENERIC.test(i.name)).sort((a, b) => a.assistantRank! - b.assistantRank!);
   const scouts: Scout[] = assistant.slice(0, 10).map((i) => ({ name: i.name.replace(/\s*\([^)]*\)/g, "").trim(), both: i.source === "both" }));
-  const counts = ORDER.map((k) => [k, plan?.entries.filter((e) => e.promo === k).length ?? 0] as [Promo, number]).filter(([, n]) => n > 0);
 
   const pooled = (lift.tiers as Record<string, { pooled: Record<string, { lift_pct: number; ci95?: number[] }> }>)[desk.tier].pooled;
   const where = desk.tier === "MLB" ? "in MLB" : "in the minors";
@@ -84,7 +82,6 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
               totals={{ desk: plan.addedFans, mine: plan.clubMixAddedFans }}
               lifts={desk.lifts}
               tier={desk.tier}
-              counts={counts}
             />
           ) : (
             <p className="chunk rounded-3xl bg-surface p-6 text-muted">This club has no 2027 home dates or no attendance history in the data, so there is no promotion plan.</p>
