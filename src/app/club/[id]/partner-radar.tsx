@@ -22,7 +22,8 @@ function place(partners: Partner[]) {
       angle += 9;
     }
     placed.push({ x, y });
-    return { x, y };
+    // Rounded so the server and the browser print the same style values.
+    return { x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 };
   });
 }
 

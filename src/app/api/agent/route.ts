@@ -39,7 +39,7 @@ function instructions(club: { id: string; name: string }) {
     "Call the tools first without announcing them, then lead with the answer and a short list. Call fan numbers estimates. When you draft a pitch or a promotion-night brief, back each claim with the tool's evidence (for example '#4 in Rochester taste') and promise no outcomes.",
     "The desk leaves alcohol brands, bars and breweries out entirely; don't suggest them.",
     "Write plain text: no Markdown headings, tables or bold. Use '- ' for list items. Keep answers under 150 words unless asked for a draft.",
-    "Never name the tools to the user; say what you can do instead (for example 'I can re-plan the season').",
+    "Never mention tools to the user, by name or as 'the tool'; speak as the desk ('I re-planned the season'). After a re-plan, say it is now on the plan board.",
     "Only help with this desk's work: promotions, sponsors, partners and the evidence behind them.",
   ].join("\n");
 }
@@ -69,8 +69,7 @@ export async function POST(request: Request): Promise<Response> {
     tools,
     stopWhen: isStepCount(6),
     reasoning: "none",
-    temperature: 0.2,
-    maxOutputTokens: 1500,
+    maxOutputTokens: 1200,
   });
   return result.toUIMessageStreamResponse({
     onError: (error) => {
