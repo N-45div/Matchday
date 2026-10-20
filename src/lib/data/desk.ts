@@ -21,6 +21,8 @@ export interface ClubDesk {
   plan: SeasonPlan | null;
   budget: Budget;
   tier: "MLB" | "MiLB";
+  /** The measured lifts the plan used (percent, weekend and Mon-Thu), for explaining a date. */
+  lifts: Lifts;
   qlooFetchedAt: string | null;
 }
 
@@ -88,6 +90,7 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
     plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: dayNight(d) })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
     budget,
     tier,
+    lifts: liftsFor(tier),
     qlooFetchedAt: qloo ? qloo.fetched_at.toISOString() : null,
   };
 }
