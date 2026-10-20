@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import fit2025 from "../../../../data/eval/sponsor-fit-2025.json";
+import lift from "../../../../data/lift/lift.json";
 import { getClubDesk } from "@/lib/data/desk";
-import { CountUp } from "../../count-up";
-import { Baseball, PROMO_STYLE, SectionTitle } from "../../ui";
-import { AskDesk } from "./ask-desk";
-import { PartnerTable } from "./partner-table";
-import { SeasonCalendar } from "./season-calendar";
-import { SponsorBoard } from "./sponsor-board";
+import { planView } from "@/lib/plan/view";
+import { monogram, type Promo } from "../../ui";
+import { Dugout } from "./dugout";
+import { PartnerRadar } from "./partner-radar";
+import { PlanBoard } from "./plan-board";
+import { SponsorHand, type Scout, type SponsorCard } from "./sponsor-hand";
 
-const fmt = (n: number) => n.toLocaleString("en-US");
+const ORDER: Promo[] = ["fireworks", "bobblehead", "giveaway", "theme", "opening"];
+// The assistant sometimes names a kind of business instead of one ("similar independent restaurants"); those aren't prospects.
+const GENERIC = /\b(similar|various|other local|local (eateries|restaurants|businesses|shops)|style local)\b/i;
 
 export async function generateMetadata({ params }: PageProps<"/club/[id]">) {
   const desk = await getClubDesk((await params).id);
@@ -19,80 +23,95 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
   const { id } = await params;
   const desk = await getClubDesk(id);
   if (!desk) notFound();
-  const { club, plan, budget } = desk;
-  const nights = (Object.entries(budget) as [string, number | undefined][]).filter(([, n]) => n);
-  const mine = plan?.clubMixAddedFans ?? null;
+  const { club, plan } = desk;
+
+  const cards: SponsorCard[] = desk.board
+    .filter((i) => i.qloo)
+    .sort((a, b) => b.qloo!.score - a.qloo!.score)
+    .slice(0, 18)
+    .map((i) => ({
+      name: i.name,
+      category: i.category,
+      cityRank: i.qloo!.cityRank != null ? i.qloo!.cityRank + 1 : null,
+      fanRank: i.qloo!.teamRank != null ? i.qloo!.teamRank + 1 : null,
+      lift: i.qloo!.localLift,
+      both: i.source === "both",
+    }));
+  const assistant = desk.board.filter((i) => i.assistantRank != null && !GENERIC.test(i.name)).sort((a, b) => a.assistantRank! - b.assistantRank!);
+  const scouts: Scout[] = assistant.slice(0, 10).map((i) => ({ name: i.name.replace(/\s*\([^)]*\)/g, "").trim(), both: i.source === "both" }));
+  const counts = ORDER.map((k) => [k, plan?.entries.filter((e) => e.promo === k).length ?? 0] as [Promo, number]).filter(([, n]) => n > 0);
+
+  const pooled = (lift.tiers as Record<string, { pooled: Record<string, { lift_pct: number; ci95?: number[] }> }>)[desk.tier].pooled;
+  const where = desk.tier === "MLB" ? "in MLB" : "in the minors";
+  const hybrid = fit2025.differences["hybrid_name300 minus llm_name300"];
+  const pitchTo = cards.find((c) => c.both)?.name ?? cards[0]?.name ?? scouts[0]?.name;
+  const suggestions = [
+    "Plan 10 fireworks nights with nothing in April",
+    pitchTo ? `Draft a pitch to ${pitchTo} for a family Sunday` : "Who should we pitch for a family Sunday?",
+    "Which partners stay open on Tuesday game nights?",
+  ];
 
   return (
-    <div className="space-y-12">
-      <header className="scoreboard rise relative overflow-hidden rounded-2xl px-6 py-8 text-white sm:px-10 sm:py-10">
-        <Baseball className="spin-slow pointer-events-none absolute -right-14 -top-14 h-56 w-56 opacity-10" />
-        <Link href="/" className="text-xs font-medium text-blue-100 hover:text-white">← All clubs</Link>
-        <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{club.name}</h1>
-        <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium">
-          <span className="rounded-full bg-white px-2.5 py-1 text-navy">{club.league}</span>
-          <span className="rounded-full bg-white/15 px-2.5 py-1">{club.venue ?? "Ballpark"}</span>
-          <span className="rounded-full bg-white/15 px-2.5 py-1">
-            {club.city}
-            {club.region ? `, ${club.region}` : ""}
+    <div className="space-y-7">
+      <section aria-label="Club" className="chunk rise flex flex-wrap items-center justify-between gap-5 rounded-[26px] bg-accent px-5 py-6 text-white sm:px-7">
+        <div className="flex min-w-0 flex-wrap items-center gap-5">
+          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full border-[3px] border-white bg-navy font-display text-2xl font-extrabold shadow-[0_0_0_2px_var(--ink)] sm:h-[88px] sm:w-[88px] sm:text-[32px]">
+            {monogram(club.name, club.nickname)}
           </span>
-          <span className="rounded-full bg-white/15 px-2.5 py-1">{club.hasFanSignal ? "Qloo knows this club's fans" : "Qloo city taste (no fan-base entity)"}</span>
-        </div>
-      </header>
-
-      {plan ? (
-        <section className="rise rounded-2xl border border-line bg-surface p-6 shadow-sm sm:p-8" style={{ animationDelay: "120ms" }}>
-          <SectionTitle kicker="2027 promotion plan" title="Your nights, on better dates">
-            The same nights as your 2026 schedule, placed on 2027 home dates where measured lift adds the most fans.
-          </SectionTitle>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {nights.map(([kind, n]) => (
-              <span key={kind} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${PROMO_STYLE[kind].chip}`}>
-                {n} {PROMO_STYLE[kind].nights}
+          <div className="min-w-0">
+            <Link href="/" className="text-sm font-semibold text-[#dce6ff] hover:text-white">← All clubs</Link>
+            <h1 className="mt-1 font-display text-4xl font-extrabold leading-none tracking-tight sm:text-[54px]">{club.name}</h1>
+            <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
+              <span className="rounded-full bg-white px-3 py-1 text-ink">{club.league}</span>
+              {club.venue && <span className="rounded-full bg-white/20 px-3 py-1">{club.venue}</span>}
+              <span className="rounded-full bg-white/20 px-3 py-1">
+                {club.city}
+                {club.region ? `, ${club.region}` : ""}
               </span>
-            ))}
+            </div>
           </div>
-          <div className="mt-6 space-y-4">
-            <Bar label="Matchday plan" value={plan.addedFans} max={plan.addedFans} strong />
-            {mine != null && <Bar label="Same nights on your 2026 weekdays" value={mine} max={plan.addedFans} />}
-          </div>
-          {mine != null && mine > 0 && plan.addedFans > mine && (
-            <p className="pop mt-5 inline-flex items-center gap-2 rounded-full bg-sun-soft px-3 py-1.5 text-sm font-semibold text-[#b45309]" style={{ animationDelay: "900ms" }}>
-              +{fmt(plan.addedFans - mine)} more fans · {(plan.addedFans / mine).toFixed(1)}× your 2026 placement
-            </p>
-          )}
-          <p className="mt-4 text-xs leading-5 text-muted">
-            Added fans are estimates from 2025–26 games at every MLB and affiliated minor league park, scaled to your own crowds. They are observed
-            associations, not guarantees. <Link href="/proof" className="font-medium text-accent hover:underline">See the evidence</Link>.
-          </p>
-        </section>
-      ) : (
-        <p className="rounded-xl border border-line bg-surface p-5 text-sm text-muted">This club has no 2027 home dates or no attendance history in the data, so there is no promotion plan.</p>
-      )}
+        </div>
+        <span className="chunk-sm rotate-3 rounded-2xl bg-sun px-3.5 py-2.5 text-sm font-extrabold tracking-wide text-ink">
+          {club.hasFanSignal ? "QLOO KNOWS YOUR FANS" : "QLOO CITY TASTE"}
+        </span>
+      </section>
 
-      <AskDesk clubId={club.id} clubName={club.name} nickname={club.nickname} />
-      <SponsorBoard items={desk.board} city={club.city} team={club.nickname} />
-      <PartnerTable partners={desk.partners} venue={club.venue} reason={desk.partnersReason} />
-      {plan && <SeasonCalendar entries={plan.entries} />}
+      <div className="flex flex-wrap items-start gap-7">
+        <div className="flex min-w-0 flex-[999_1_640px] flex-col gap-7 pb-24 lg:pb-0">
+          {plan ? (
+            <PlanBoard
+              view={planView(plan)}
+              totals={{ desk: plan.addedFans, mine: plan.clubMixAddedFans }}
+              lifts={desk.lifts}
+              tier={desk.tier}
+              counts={counts}
+            />
+          ) : (
+            <p className="chunk rounded-3xl bg-surface p-6 text-muted">This club has no 2027 home dates or no attendance history in the data, so there is no promotion plan.</p>
+          )}
+          <SponsorHand cards={cards} scouts={scouts} scoutTotal={assistant.length} city={club.city} nickname={club.nickname} />
+          <PartnerRadar partners={desk.partners} venue={club.venue} reason={desk.partnersReason} />
+          <section aria-labelledby="ev-h">
+            <h2 id="ev-h" className="font-display text-[26px] font-extrabold">How sure is this?</h2>
+            <div className="mt-3.5 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3.5">
+              <Tile value={`+${pooled.fireworks.lift_pct}%`} text={`Crowd lift on fireworks nights ${where}, 2025–26. 95% range ${pooled.fireworks.ci95?.[0]} to ${pooled.fireworks.ci95?.[1]}.`} />
+              <Tile value={`+${Math.round(pooled.fireworks_midweek_total.lift_pct)}%`} text="The same lift Monday to Thursday, when crowds are small. That is why midweek dates win." />
+              <Tile value={`+${hybrid.value}`} text={`More real 2025 sponsors found by the two-list board than by the assistant alone. Range +${hybrid.ci95[0]} to +${hybrid.ci95[1]}.`} />
+            </div>
+            <Link href="/proof" className="mt-3 inline-block text-sm font-bold text-accent hover:underline">All the evidence and its limits</Link>
+          </section>
+        </div>
+        <Dugout clubId={club.id} clubName={club.name} suggestions={suggestions} />
+      </div>
     </div>
   );
 }
 
-function Bar({ label, value, max, strong }: { label: string; value: number; max: number; strong?: boolean }) {
+function Tile({ value, text }: { value: string; text: string }) {
   return (
-    <div>
-      <div className="flex items-baseline justify-between gap-3 text-sm">
-        <span className={strong ? "font-semibold" : "text-muted"}>{label}</span>
-        <span className={`font-display tabular-nums ${strong ? "text-2xl font-extrabold text-accent" : "text-lg font-bold text-muted"}`}>
-          <CountUp value={value} prefix="+" /> <span className="text-xs font-medium">fans</span>
-        </span>
-      </div>
-      <div className="mt-1.5 h-3 overflow-hidden rounded-full bg-accent-soft">
-        <div
-          className={`bar-grow h-full rounded-full ${strong ? "bg-gradient-to-r from-accent to-accent-2" : "bg-[#9db4dc]"}`}
-          style={{ width: `${Math.max(2, (value / Math.max(max, 1)) * 100)}%`, animationDelay: strong ? "200ms" : "450ms" }}
-        />
-      </div>
+    <div className="rounded-[18px] border-2 border-ink bg-navy p-4 text-[#f4f7ff]">
+      <span className="led text-[34px] text-sun">{value}</span>
+      <p className="mt-1.5 text-sm leading-snug">{text}</p>
     </div>
   );
 }
