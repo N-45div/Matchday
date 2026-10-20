@@ -160,7 +160,9 @@ export async function getEvidence() {
   const t25 = fit2025.totals as Record<string, { found: number }>;
   const d25 = fit2025.differences as Record<string, { value: number; ci95: number[] }>;
   return {
-    attendanceLift: Object.fromEntries(Object.keys(tiers).map((t) => [t, Object.fromEntries(PROMOS.map(([k, label]) => [label, effect(tiers[t].pooled[k])]))])),
+    attendanceLift: Object.fromEntries(
+      Object.keys(tiers).map((t) => [t === "MLB" ? "MLB" : "All minor league levels together (Triple-A to Single-A)", Object.fromEntries(PROMOS.map(([k, label]) => [label, effect(tiers[t].pooled[k])]))]),
+    ),
     attendanceMethod: "Regular-season games 2025-26 from the MLB Stats API; log attendance on promotion flags with club-season, weekday, month, day/night, temperature and rain controls; errors clustered by club.",
     sponsorTest: {
       labels: `${fit2026.labels} presenting sponsors that ${fit2026.clubs} clubs published for 2026, and the 2025 equivalents.`,
