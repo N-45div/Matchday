@@ -3,14 +3,9 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { ClubSummary } from "@/lib/data/clubs";
+import { monogram } from "./ui";
 
-const initials = (name: string) =>
-  name
-    .split(" ")
-    .filter((w) => /^[A-Z]/.test(w))
-    .slice(-2)
-    .map((w) => w[0])
-    .join("");
+const CAPS = ["bg-accent", "bg-navy", "bg-stitch", "bg-accent", "bg-navy", "bg-grass"];
 
 export function ClubPicker({ clubs, leagues }: { clubs: ClubSummary[]; leagues: readonly string[] }) {
   const [query, setQuery] = useState("");
@@ -22,53 +17,60 @@ export function ClubPicker({ clubs, leagues }: { clubs: ClubSummary[]; leagues: 
 
   return (
     <div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by club, city or ballpark"
-          aria-label="Search clubs"
-          className="w-full rounded-full border border-line bg-surface px-4 py-2.5 text-sm shadow-sm outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15 sm:max-w-sm"
-        />
-        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by league">
-          {[null, ...leagues].map((l) => (
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <h2 id="choose" className="font-display text-[32px] font-extrabold tracking-tight">Choose your club</h2>
+        <label className="flex w-full max-w-sm flex-col gap-1.5 text-[13px] font-bold">
+          Search
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            type="search"
+            placeholder="Club, city or ballpark"
+            className="chunk-sm min-h-12 rounded-full bg-surface px-5 text-base font-normal outline-none focus:ring-4 focus:ring-accent/25"
+          />
+        </label>
+      </div>
+      <div role="group" aria-label="League" className="mt-5 inline-flex flex-wrap gap-1.5 rounded-[18px] border-2 border-ink bg-surface p-1.5">
+        {[null, ...leagues].map((l) => {
+          const count = l ? clubs.filter((c) => c.league === l).length : clubs.length;
+          return (
             <button
               key={l ?? "all"}
               type="button"
               onClick={() => setLeague(l)}
               aria-pressed={league === l}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${league === l ? "bg-accent text-accent-ink shadow" : "bg-surface text-muted ring-1 ring-line hover:text-accent"}`}
+              className={`min-h-11 rounded-xl px-4 text-[15px] font-bold transition-colors ${league === l ? "bg-accent text-white" : "hover:bg-bg"}`}
             >
-              {l ?? "All"}
+              {l ?? "All"} <span className="led ml-1">{count}</span>
             </button>
-          ))}
-        </div>
+          );
+        })}
       </div>
-      {shown.length === 0 && <p className="mt-6 text-sm text-muted">No club matches “{query}”.</p>}
+      {shown.length === 0 && <p className="mt-6 text-muted">No club matches “{query}”.</p>}
       {leagues.map((l) => {
         const list = shown.filter((c) => c.league === l);
         if (!list.length) return null;
         return (
-          <section key={l} className="mt-8">
-            <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              {l} · {list.length}
-            </h3>
-            <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          <section key={l} className="mt-8" aria-label={l}>
+            <p className="text-[13px] font-bold uppercase tracking-[0.12em] text-muted">
+              {l} · {list.length} clubs
+            </p>
+            <ul className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-3.5">
               {list.map((c, i) => (
                 <li key={c.id} className="rise" style={{ animationDelay: `${Math.min(i, 12) * 25}ms` }}>
-                  <Link href={`/club/${c.id}`} className="lift group flex items-center gap-3 rounded-xl border border-line bg-surface px-3.5 py-3 hover:border-accent">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent-soft font-display text-sm font-bold text-accent transition group-hover:bg-accent group-hover:text-accent-ink">
-                      {initials(c.name)}
+                  <Link href={`/club/${c.id}`} className="press chunk-sm group flex items-center gap-3.5 rounded-[18px] bg-surface px-4 py-3.5">
+                    <span className={`grid h-[50px] w-[50px] shrink-0 place-items-center rounded-full border-2 border-ink font-display text-lg font-extrabold text-white transition-transform group-hover:rotate-12 ${CAPS[i % CAPS.length]}`}>
+                      {monogram(c.name, c.nickname)}
                     </span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-semibold">{c.name}</span>
-                      <span className="block truncate text-xs text-muted">
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-bold">{c.name}</span>
+                      <span className="mt-0.5 block truncate text-[13px] text-muted">
                         {c.city}
                         {c.region ? `, ${c.region}` : ""}
                         {c.venue ? ` · ${c.venue}` : ""}
                       </span>
                     </span>
+                    <span className="hidden shrink-0 rounded-full border-2 border-ink bg-sun px-2.5 py-1 text-xs font-extrabold tracking-wider group-hover:inline">SELECT</span>
                   </Link>
                 </li>
               ))}
