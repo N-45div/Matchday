@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { ClubSummary } from "../data/clubs";
 import { matchClubs } from "./tools";
 
-const club = (id: string, name: string, city: string, region: string, league = "Triple-A"): ClubSummary => ({ id, name, league, city, region, venue: null, hasFanSignal: false });
+const club = (id: string, name: string, city: string, region: string, league = "Triple-A"): ClubSummary => ({ id, name, nickname: name.split(" ").at(-1)!, league, city, region, venue: null, hasFanSignal: false });
 const clubs = [
   club("mlb-534", "Rochester Red Wings", "Rochester", "NY"),
   club("mlb-147", "New York Yankees", "Bronx", "NY", "MLB"),
