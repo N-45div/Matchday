@@ -33,7 +33,9 @@ function Message({ message }: { message: UIMessage }) {
     );
   }
   const plays = message.parts.filter(isToolUIPart);
-  const text = message.parts.map((p) => (p.type === "text" ? p.text : "")).join("").trim();
+  // Text before the last tool call is the model thinking aloud ("I'll check the board"); the answer comes after it.
+  const lastPlay = message.parts.findLastIndex(isToolUIPart);
+  const text = message.parts.slice(lastPlay + 1).map((p) => (p.type === "text" ? p.text : "")).join("").trim();
   return (
     <div className="rise space-y-2">
       {plays.length > 0 && (
