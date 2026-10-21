@@ -62,6 +62,13 @@ body {
   color: var(--ink);
 }
 
+/* A keyboard focus ring that shows on the light field and on the navy scoreboards. In the base layer, so a field that draws its
+   own ring (outline-none plus a ring utility) keeps it. */
+@layer base {
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .bg-navy :focus-visible, .bg-led :focus-visible { outline-color: var(--sun); }
+}
+
 /* ---- the kit */
 
 .chunk { border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
