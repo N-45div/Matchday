@@ -90,6 +90,12 @@ export function isDrinkPlace(place: QlooPlace): boolean {
   return drinky(place.name) || placeTags(place).some(drinky);
 }
 
+/** North American numbers as (585) 736-7430; anything else as Qloo gives it. */
+export function formatPhone(phone: string): string {
+  const m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(phone.replace(/[\s().-]/g, ""));
+  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : phone;
+}
+
 export function bearing(a: Venue, b: { lat: number; lon: number }): number {
   const east = (b.lon - a.lng) * Math.cos((a.lat * Math.PI) / 180);
   const north = b.lat - a.lat;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bearing, distanceKm, isDrinkPlace, kindOf, openDuring, partnerQuery, toPartners, type QlooPlace } from "./partners";
+import { bearing, distanceKm, formatPhone, isDrinkPlace, kindOf, openDuring, partnerQuery, toPartners, type QlooPlace } from "./partners";
 
 const venue = { lat: 43.1583, lng: -77.6197 };
 const tag = (name: string) => ({ id: `urn:tag:genre:place:${name.toLowerCase().replace(/ /g, "_")}`, name });
@@ -68,5 +68,13 @@ describe("bearing", () => {
     expect(bearing(venue, { lat: venue.lat, lon: venue.lng + 0.01 })).toBe(90);
     expect(bearing(venue, { lat: venue.lat - 0.01, lon: venue.lng })).toBe(180);
     expect(bearing(venue, { lat: venue.lat, lon: venue.lng - 0.01 })).toBe(270);
+  });
+});
+
+describe("formatPhone", () => {
+  it("formats North American numbers and leaves others alone", () => {
+    expect(formatPhone("+15857367430")).toBe("(585) 736-7430");
+    expect(formatPhone("+1 585-736-7430")).toBe("(585) 736-7430");
+    expect(formatPhone("+442071234567")).toBe("+442071234567");
   });
 });

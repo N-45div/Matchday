@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Partner } from "@/lib/partners/partners";
+import { formatPhone, type Partner } from "@/lib/partners/partners";
 
 const SHOWN = 12;
 const RANGE_KM = 3;
@@ -82,7 +82,7 @@ export function PartnerRadar({ partners, venue, reason }: { partners: Partner[];
                     {p.distanceKm != null && <span className="tabular-nums">{p.distanceKm} km</span>}
                     {p.priceLevel ? <span>{"$".repeat(p.priceLevel)}</span> : null}
                     {p.rating != null && <span className="tabular-nums"><span className="text-[#b07d00]">★</span> {p.rating}</span>}
-                    {p.phone && <a href={`tel:${p.phone}`} className="tabular-nums text-accent hover:underline">{p.phone}</a>}
+                    {p.phone && <a href={`tel:${p.phone}`} className="tabular-nums text-accent hover:underline">{formatPhone(p.phone)}</a>}
                   </p>
                   <div className="mt-1.5 flex gap-1" aria-label={p.gameNightDays.length ? `Open through night games on ${p.gameNightDays.join(", ")}` : "Game-night hours not listed"}>
                     {DAYS.map(([day, letter]) => (
