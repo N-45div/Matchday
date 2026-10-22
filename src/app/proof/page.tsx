@@ -38,7 +38,7 @@ export default function Proof() {
   const held = Object.values(tiers).flatMap((t) => Object.values(t.holdout_2026.coefficient_2026_inside_2025_ci));
   const promoName = Object.fromEntries(PROMOS);
   const misses = Object.entries(tiers).flatMap(([tier, t]) =>
-    Object.entries(t.holdout_2026.coefficient_2026_inside_2025_ci).filter(([, inside]) => !inside).map(([k]) => `${(TIER_LABEL[tier] ?? tier).toLowerCase()} ${(promoName[k] ?? k).toLowerCase()}s`),
+    Object.entries(t.holdout_2026.coefficient_2026_inside_2025_ci).filter(([, inside]) => !inside).map(([k]) => `${tier === "MiLB" ? "minor league" : (TIER_LABEL[tier] ?? tier)} ${(promoName[k] ?? k).toLowerCase()}s`),
   );
   const fans = (n: number) => Math.round(n).toLocaleString("en-US");
   const head = "px-4 py-2.5 text-[11px] font-bold tracking-[0.12em] text-[#a9bceb]";
