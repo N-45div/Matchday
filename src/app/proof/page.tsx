@@ -34,7 +34,13 @@ function Card({ n, title, children }: { n: string; title: string; children: Reac
 }
 
 export default function Proof() {
-  const tiers = lift.tiers as Record<string, { games: Record<string, number>; pooled: Record<string, Effect>; holdout_2026: { mae_with_promotions: number; mae_without_promotions: number } }>;
+  const tiers = lift.tiers as Record<string, { games: Record<string, number>; pooled: Record<string, Effect>; holdout_2026: { mae_with_promotions: number; mae_without_promotions: number; coefficient_2026_inside_2025_ci: Record<string, boolean> } }>;
+  const held = Object.values(tiers).flatMap((t) => Object.values(t.holdout_2026.coefficient_2026_inside_2025_ci));
+  const promoName = Object.fromEntries(PROMOS);
+  const misses = Object.entries(tiers).flatMap(([tier, t]) =>
+    Object.entries(t.holdout_2026.coefficient_2026_inside_2025_ci).filter(([, inside]) => !inside).map(([k]) => `${(TIER_LABEL[tier] ?? tier).toLowerCase()} ${(promoName[k] ?? k).toLowerCase()}s`),
+  );
+  const fans = (n: number) => Math.round(n).toLocaleString("en-US");
   const head = "px-4 py-2.5 text-[11px] font-bold tracking-[0.12em] text-[#a9bceb]";
   return (
     <article className="mx-auto max-w-4xl space-y-7">
@@ -72,8 +78,8 @@ export default function Proof() {
           </table>
         </div>
         <p>
-          The effects held from one season to the next. They don&apos;t make single-game forecasts much better, though: fitted on 2025 and scored on 2026, the typical error moved from{" "}
-          {Object.keys(tiers).map((t) => `${tiers[t].holdout_2026.mae_without_promotions.toLocaleString("en-US")} to ${tiers[t].holdout_2026.mae_with_promotions.toLocaleString("en-US")} fans (${TIER_LABEL[t] ?? t})`).join(" and ")}. Promotions shift the average; weather, opponents and everything else still dominate any one night.
+          The effects mostly held from one season to the next: {held.filter(Boolean).length} of {held.length} 2026 estimates fell inside their 2025 ranges{misses.length ? ` (outside: ${misses.join(", ")})` : ""}. They don&apos;t make single-game forecasts much better, though: fitted on 2025 and scored on 2026, the typical error moved from{" "}
+          {Object.keys(tiers).map((t) => `${fans(tiers[t].holdout_2026.mae_without_promotions)} to ${fans(tiers[t].holdout_2026.mae_with_promotions)} fans (${TIER_LABEL[t] ?? t})`).join(" and ")}. Promotions shift the average; weather, opponents and everything else still dominate any one night.
         </p>
         <p>
           <strong>How the plan compares.</strong> &ldquo;Your 2026 way&rdquo; places exactly the same nights as the Matchday plan, on the weekdays the club used in 2026, so only the dates differ. 2027 start times aren&apos;t published yet, so weekdays a club played mostly in daylight in 2025–26 (usually Sundays) count as day games and get no fireworks.
