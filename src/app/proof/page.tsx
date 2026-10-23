@@ -1,6 +1,7 @@
 import lift from "../../../data/lift/lift.json";
 import fit2026 from "../../../data/eval/sponsor-fit.json";
 import fit2025 from "../../../data/eval/sponsor-fit-2025.json";
+import themes from "../../../data/eval/theme-nights.json";
 import { McpUrl } from "./mcp-url";
 
 export const metadata = { title: "Evidence · Matchday Revenue Desk" };
@@ -14,8 +15,30 @@ const TOOLS: [string, string][] = [
   ["plan_season", "Re-plan a club's 2027 nights: change counts, skip months."],
   ["sponsor_board", "Both sponsor lists with Qloo evidence; filter by category."],
   ["nearby_partners", "Family food places near the park, open on a given game night."],
+  ["family_themes", "Family theme night ideas your town ranks high for, with dates."],
+  ["check_theme_night", "Asks Qloo live how your town leans toward any family theme."],
   ["get_evidence", "These numbers and their limits."],
 ];
+
+const THEME_ARMS: [keyof typeof themes.spearman_demeaned_residual_vs_score, string][] = [
+  ["heatmap", "Qloo: how the area around the ballpark leans toward it"],
+  ["qloo", "Qloo: the town's taste (covers fewer subjects)"],
+  ["assistant", "Assistant only (Claude Haiku 5.5)"],
+  ["heatmap_placebo", "Placebo: another club's area"],
+];
+const signed = (n: number) => `${n > 0 ? "+" : ""}${n.toFixed(2)}`;
+
+/** The theme test's result in a sentence, whichever way it came out. */
+function themeReading(): string {
+  const h = themes.spearman_demeaned_residual_vs_score.heatmap;
+  const vsPlacebo = themes.amendment_heatmap.heatmap_minus_placebo;
+  const vsAssistant = themes.amendment_heatmap.heatmap_minus_assistant;
+  const passed = h.ci95[0] > 0 && h.mean > themes.spearman_demeaned_residual_vs_score.heatmap_placebo.mean;
+  const assistantLine = vsAssistant.ci95[0] > 0 ? "It also beat the assistant" : vsAssistant.ci95[1] < 0 ? "The assistant did better" : "Against the assistant it was a draw";
+  return passed
+    ? `It worked: nights drew more where the area leaned toward the subject (${signed(h.mean)}, range ${ci(h.ci95)}), and more than a placebo (${signed(vsPlacebo.mean)}, range ${ci(vsPlacebo.ci95)}). ${assistantLine} (${signed(vsAssistant.mean)}, range ${ci(vsAssistant.ci95)}). That is why the desk ranks each club's theme ideas this way.`
+    : `It didn't show. How the area around a ballpark leaned toward a subject didn't reliably predict which of its theme nights drew more (${signed(h.mean)}, range ${ci(h.ci95)}), and neither did the assistant's ratings (${signed(themes.spearman_demeaned_residual_vs_score.assistant.mean)}) or the town-taste score (${signed(themes.spearman_demeaned_residual_vs_score.qloo.mean)}). Single nights are noisy: even the placebo landed at ${signed(themes.spearman_demeaned_residual_vs_score.heatmap_placebo.mean)}. The desk still suggests theme ideas this way, as a list of things each town likes, and every club page says the ranking is untested.`;
+}
 
 const pct = (e: Effect) => `${e.lift_pct > 0 ? "+" : ""}${e.lift_pct}%`;
 const ci = (c?: number[]) => (c ? `${c[0]} to ${c[1]}` : "–");
@@ -115,7 +138,36 @@ export default function Proof() {
         </ul>
       </Card>
 
-      <Card n="03" title="What this does not establish">
+      <Card n="03" title="Do towns turn out for themes they love?">
+        <p className="text-muted">
+          Written down before it ran (docs/eval-plan.md section 3, with an amendment made before any outcome existed). {themes.theme_games_with_kept_subject} theme nights in
+          2025–26 were built on {themes.subjects} family-safe subjects that three or more clubs used, such as Star Wars, Bluey and Harry Potter. Each night&apos;s crowd
+          is measured against what the attendance model expects for a theme night at that club on that date, and compared only with nights on the same subject
+          elsewhere, so national popularity drops out.
+        </p>
+        <div className="overflow-x-auto rounded-2xl border-2 border-ink">
+          <table className="w-full min-w-[480px] text-left">
+            <thead className="bg-bg text-xs font-bold tracking-[0.1em] text-muted">
+              <tr><th scope="col" className="px-4 py-2.5">TOWN SCORE</th><th scope="col" className="px-4 py-2.5">CORRELATION WITH THE CROWD</th><th scope="col" className="px-4 py-2.5">NIGHTS</th></tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {THEME_ARMS.map(([key, label]) => {
+                const a = themes.spearman_demeaned_residual_vs_score[key];
+                return (
+                  <tr key={key} className={key === "heatmap" ? "bg-sun-soft" : ""}>
+                    <th scope="row" className="px-4 py-2.5 font-semibold">{label}</th>
+                    <td className="px-4 py-2.5"><span className="led text-xl">{signed(a.mean)}</span> <span className="text-xs text-muted">{ci(a.ci95)}</span></td>
+                    <td className="px-4 py-2.5 tabular-nums">{a.n}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p>{themeReading()}</p>
+      </Card>
+
+      <Card n="04" title="What this does not establish">
         <ul className="list-disc space-y-2 pl-5 text-muted">
           <li>Lifts are observed associations; clubs choose when to run promotions, so they are not controlled experiments.</li>
           <li>Sponsor labels show who bought, not who should. A suggested brand may never sign.</li>
@@ -128,7 +180,7 @@ export default function Proof() {
         <p className="text-[13px] font-extrabold tracking-[0.14em] text-sun">USE IT IN CLAUDE</p>
         <h2 className="mt-1 font-display text-2xl font-extrabold sm:text-[28px]">The desk as a connector</h2>
         <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-[#dce5fa]">
-          The same five tools the dugout uses are served over MCP, with no sign-in. In Claude, open Settings, then Connectors, add a custom connector, and paste this address:
+          The same seven tools the dugout uses are served over MCP, with no sign-in. In Claude, open Settings, then Connectors, add a custom connector, and paste this address:
         </p>
         <McpUrl />
         <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
