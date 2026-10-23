@@ -88,3 +88,11 @@ An exploratory look at the same 2026 data showed the two find different sponsors
 - **Success:** Qloo's correlation is above zero with an interval that excludes zero, and above the placebo's. Qloo against the assistant is reported either way.
 - **Product rule, fixed now.** Matchday suggests family theme nights for each club from Qloo local taste either way. If the test succeeds, the page says the ranking was tested and how; if it doesn't, the page says the ranking is untested and shows the result.
 - **Does not establish:** clubs choose their own themes, and may already pick ones their town likes, so this is association, not a controlled test. A night's draw also reflects its giveaway, marketing and the opponent. The number of games per subject may be small, so a null result is possible and will be reported as such.
+
+### Amendment to section 3 (Oct 24 2026, after scoring coverage was seen, before any outcome was computed)
+
+- **Why.** Arm 1 returns too little. On the first 20 clubs, Qloo's location insights returned a score for 128 of 520 subject-town pairs (25%), and none at all for subjects such as Harry Potter (37 clubs ran a night on it) and Toy Story. Arm 1 stays as written and is still reported, but it rests on a handful of subjects.
+- **Arm 1b, Qloo heatmap pull.** One national Qloo heatmap per kept subject (`filter.type=urn:heatmap`, `signal.interests.entities` set to the subject), then each club's pull: the popularity-weighted mean affinity of the heatmap cells within 60 km of its ballpark (`analysis/theme-heatmaps.mts`). Demeaned within subject like the other scores. This is the measure the agent's live theme check uses.
+- **Placebo for arm 1b:** the same subject's heatmap pull at another club's ballpark, from the same fixed pairing (seed 21).
+- **Same analysis and success rule** as arm 1, plus paired differences 1b minus its placebo and 1b minus the assistant.
+- **Product rule, replacing the one above.** The desk ranks a club's theme ideas by heatmap pull, which covers every kept subject and club. If arm 1b succeeds, the page says that ranking was tested and how; otherwise it says the ranking is untested and shows the result. Arm 1 is reported either way.
