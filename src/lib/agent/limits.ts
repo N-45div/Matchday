@@ -11,6 +11,8 @@ export const LIMITS = {
   agentPerDay: 250,
   /** MCP tool calls per address per day. They read the database only, so the limit is loose. */
   mcpPerAddress: 600,
+  /** Live Qloo heatmaps the agent may ask for in a day (check_theme_night); subjects already checked are reused free. */
+  liveQlooPerDay: 150,
 };
 
 export function addressOf(headers: Headers): string {
@@ -20,7 +22,7 @@ export function addressOf(headers: Headers): string {
 const hashed = (address: string) => createHash("sha256").update(`matchday:${address}`).digest("hex").slice(0, 24);
 
 /** Counts one use against a key for today; false once today's count passes the limit. */
-async function take(key: string, limit: number): Promise<boolean> {
+export async function take(key: string, limit: number): Promise<boolean> {
   const [row] = (await sql()`insert into usage_counts (key, day, count) values (${key}, current_date, 1)
     on conflict (key, day) do update set count = usage_counts.count + 1 returning count`) as { count: number }[];
   return row.count <= limit;

@@ -22,6 +22,8 @@ const PLAYS: Record<string, [running: string, done: string]> = {
   sponsor_board: ["Reading the sponsor board", "Read the sponsor board"],
   nearby_partners: ["Scouting food partners", "Scouted food partners"],
   plan_season: ["Re-planning the season", "Re-planned the season"],
+  family_themes: ["Finding family theme nights", "Found family theme nights"],
+  check_theme_night: ["Asking Qloo about that theme", "Asked Qloo about that theme"],
   get_evidence: ["Checking the evidence", "Checked the evidence"],
 };
 
@@ -130,7 +132,7 @@ export function Dugout({ clubId, clubName, suggestions }: { clubId: string; club
           </button>
         </div>
         <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto p-4" aria-live="polite">
-          <p className="text-[13px] text-muted">An agent with the desk&apos;s five tools. Every name and number comes from a tool call.</p>
+          <p className="text-[13px] text-muted">An agent with the desk&apos;s seven tools. Every name and number comes from a tool call.</p>
           {messages.map((m) => <Message key={m.id} message={m} clubId={clubId} onBoard={() => setOpen(false)} />)}
           {status === "submitted" && <span className="shimmer h-10 w-2/3 rounded-[18px]" />}
           {error && <p className="rounded-xl border-2 border-ink bg-warn-soft px-3.5 py-2.5 text-sm text-warn">{readable(error)}</p>}

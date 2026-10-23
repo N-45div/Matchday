@@ -1,6 +1,7 @@
 // One list of the desk's tools with the words a model sees, used by both the in-app agent and the MCP server.
 
 import type { z } from "zod";
+import { checkThemeInput, checkThemeNight, familyThemes, familyThemesInput } from "./themes";
 import { evidenceInput, findClubs, findClubsInput, getEvidence, nearbyPartners, partnersInput, planInput, planNextSeason, sponsorBoard, sponsorBoardInput } from "./tools";
 
 export interface DeskTool<S extends z.ZodObject = z.ZodObject> {
@@ -13,6 +14,23 @@ export interface DeskTool<S extends z.ZodObject = z.ZodObject> {
 const define = <S extends z.ZodObject>(t: DeskTool<S>) => t as unknown as DeskTool;
 
 export const DESK_TOOLS: Record<string, DeskTool> = {
+  family_themes: define({
+    title: "Family theme nights",
+    description:
+      "For one club: family-safe theme night ideas (films, shows, franchises, characters, artists or games other clubs built nights on), ranked by how " +
+      "the club's town compares with all club towns in Qloo local taste, each with a suggested date from the plan and how it was tested. Use for theme night ideas.",
+    input: familyThemesInput,
+    run: familyThemes,
+  }),
+  check_theme_night: define({
+    title: "Check a theme night idea with Qloo",
+    description:
+      "Asks Qloo live how strongly the club's town leans toward one subject (a film, show, franchise, character, artist or game) compared with every " +
+      "club town, from a national heatmap. Refuses anything not family-safe: drinking, gambling, tobacco or cannabis themes, or films rated R. Use when " +
+      "someone asks whether a specific theme would work in their town.",
+    input: checkThemeInput,
+    run: checkThemeNight,
+  }),
   find_clubs: define({
     title: "Find a club",
     description:
