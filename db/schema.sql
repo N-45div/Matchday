@@ -55,3 +55,18 @@ create table if not exists usage_counts (
   count integer not null default 0,
   primary key (key, day)
 );
+
+-- Family theme nights for each club (scripts/load-themes.mts): family-safe subjects other clubs built theme nights on, with how
+-- this club's town ranks for each among all club towns by Qloo local taste (docs/eval-plan.md section 3).
+create table if not exists club_themes (
+  club_id text primary key references clubs(id) on delete cascade,
+  themes jsonb not null
+);
+
+-- Live theme checks from the agent (check_theme_night): one Qloo heatmap per subject, turned into each club town's pull, kept.
+create table if not exists theme_checks (
+  entity_id text primary key,
+  name text not null,
+  fetched_at timestamptz not null default now(),
+  pulls jsonb not null
+);
