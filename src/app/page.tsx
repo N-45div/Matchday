@@ -10,10 +10,10 @@ import { Baseball } from "./ui";
 const EXAMPLE = "mlb-534";
 
 const PLAYS = [
-  { n: "01", title: "Plan the season", body: "Your fireworks, bobbleheads and giveaways, moved to the 2027 dates where measured lift adds the most fans.", tint: "bg-sun", icon: "plan" },
+  { n: "01", title: "Plan the season", body: "Your fireworks, bobbleheads and giveaways moved to the 2027 dates where measured lift adds the most fans, plus family theme nights your town loves.", tint: "bg-sun", icon: "plan" },
   { n: "02", title: "Pitch sponsors", body: "Trading cards for brands your city and fans rank high, plus the local businesses an assistant knows.", tint: "bg-sky", icon: "pitch" },
   { n: "03", title: "Sign food partners", body: "Family restaurants, cafes and bakeries around the ballpark, ranked by your fans. No bars.", tint: "bg-grass-soft", icon: "partner" },
-  { n: "04", title: "Ask the desk", body: "An agent with the desk's tools: re-plan, filter, draft a pitch. It also works inside Claude.", tint: "bg-bg", icon: "ask" },
+  { n: "04", title: "Ask the desk", body: "An agent with the desk's tools: re-plan, check a theme idea with Qloo, draft a pitch. It also works inside Claude.", tint: "bg-bg", icon: "ask" },
 ] as const;
 
 function PlayIcon({ icon }: { icon: (typeof PLAYS)[number]["icon"] }) {

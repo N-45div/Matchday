@@ -24,7 +24,25 @@ export interface ClubDesk {
   /** The measured lifts the plan used (percent, weekend and Mon-Thu), for explaining a date. */
   lifts: Lifts;
   qlooFetchedAt: string | null;
+  /** Family theme nights: subjects other clubs built nights on, where this town ranks high by Qloo local taste. */
+  themes: ThemeIdea[];
 }
+
+export interface ThemeIdea {
+  subject: string;
+  /** franchise, film, TV show, music or game */
+  kind: string;
+  /** Share of other club towns this town out-ranks for the subject (1 = the strongest of all). */
+  percentile: number;
+  /** Clubs that ran a night built on it in 2025-26. */
+  clubsRan: number;
+  ranHere: boolean;
+  /** One of the plan's theme nights to put it on (family days first), or an open family day. */
+  date: string | null;
+}
+
+/** Family theme ideas shown per club. */
+const THEME_IDEAS = 6;
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -81,16 +99,28 @@ export async function getClubDesk(id: string, opts: DeskOptions = {}): Promise<C
   // Start times are unset until clubs publish them; a weekday this club played mostly in daylight in 2025-26 counts as a day game.
   const nights = (nightShare.clubs as Record<string, Record<string, number>>)[id] ?? {};
   const dayNight = (d: { date: string; day_night: string | null }) => d.day_night ?? ((nights[WEEKDAYS[new Date(`${d.date}T12:00:00Z`).getUTCDay()]] ?? 1) < 0.5 ? "day" : null);
+  const plan = baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: dayNight(d) })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null;
+
+  // The strongest family theme subjects for this town, each put on one of the plan's theme nights (family days first), then on open
+  // family days when the plan has too few theme nights (a club that ran none in 2026 gets none to copy).
+  const [themeRow] = (await db`select themes from club_themes where club_id = ${id}`.catch(() => [])) as { themes: Omit<ThemeIdea, "date">[] }[];
+  const entries = plan?.entries ?? [];
+  const themeDates = [
+    ...entries.filter((e) => e.promo === "theme").sort((a, b) => Number(b.family) - Number(a.family) || a.date.localeCompare(b.date)),
+    ...entries.filter((e) => e.promo == null && e.family).sort((a, b) => a.date.localeCompare(b.date)),
+  ];
+  const themes = (themeRow?.themes ?? []).slice(0, THEME_IDEAS).map((t, i) => ({ ...t, date: themeDates[i]?.date ?? null }));
 
   return {
     club: { id: club.id, name: club.name, nickname: club.nickname ?? club.name, league: club.league, city: club.city, region: club.region, venue: club.venue, market: club.market, hasFanSignal: Boolean(club.team_entity_id) },
     board: buildBoard(ai?.names ?? [], qlooBoard, 150, [], ai?.restricted ?? {}),
     partners,
     partnersReason: partners.length ? null : club.lat == null || club.lng == null ? "no-coordinates" : "none-nearby",
-    plan: baseline && open.length ? planSeason(open.map((d) => ({ date: d.date, dayNight: dayNight(d) })), baseline, liftsFor(tier), budget, { fireworks: true }, mix) : null,
+    plan,
     budget,
     tier,
     lifts: liftsFor(tier),
     qlooFetchedAt: qloo ? qloo.fetched_at.toISOString() : null,
+    themes,
   };
 }

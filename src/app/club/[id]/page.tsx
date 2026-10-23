@@ -5,9 +5,11 @@ import lift from "../../../../data/lift/lift.json";
 import { getClubDesk } from "@/lib/data/desk";
 import { planView } from "@/lib/plan/view";
 import { monogram } from "../../ui";
+import { themeVerdict } from "@/lib/agent/themes";
 import { Dugout } from "./dugout";
 import { PartnerRadar } from "./partner-radar";
 import { PlanBoard } from "./plan-board";
+import { ThemeNights } from "./theme-nights";
 import { SponsorHand, type Scout, type SponsorCard } from "./sponsor-hand";
 
 // The assistant sometimes names a kind of business instead of one ("similar independent restaurants"); those aren't prospects.
@@ -46,7 +48,8 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
   const suggestions = [
     "Plan 10 fireworks nights with nothing in April",
     pitchTo ? `Draft a pitch to ${pitchTo} for a family Sunday` : "Who should we pitch for a family Sunday?",
-    "Which partners stay open on Tuesday game nights?",
+    // Asks Qloo live (check_theme_night); the page already lists the partners.
+    `Would a Bluey night work in ${club.city}?`,
   ];
 
   return (
@@ -86,6 +89,7 @@ export default async function ClubPage({ params }: PageProps<"/club/[id]">) {
           ) : (
             <p className="chunk rounded-3xl bg-surface p-6 text-muted">This club has no 2027 home dates or no attendance history in the data, so there is no promotion plan.</p>
           )}
+          <ThemeNights themes={desk.themes} city={club.city} lift={desk.lifts.theme.weekend} verdict={themeVerdict()} />
           <SponsorHand cards={cards} scouts={scouts} scoutTotal={assistant.length} city={club.city} nickname={club.nickname} />
           <PartnerRadar partners={desk.partners} venue={club.venue} reason={desk.partnersReason} />
           <section aria-labelledby="ev-h">
