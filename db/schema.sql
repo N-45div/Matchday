@@ -1,4 +1,4 @@
--- Matchday Revenue Desk: everything the app reads at request time, so judges never wait on (or spend) live API calls.
+-- Matchday Revenue Desk: everything the app reads at request time, so visitors never wait on (or spend) live API calls.
 
 create table if not exists clubs (
   id text primary key,
