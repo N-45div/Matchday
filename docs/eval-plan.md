@@ -69,3 +69,22 @@ An exploratory look at the same 2026 data showed the two find different sponsors
 - **Success:** hybrid finds more 2025 sponsors, with a 95% interval for the difference that excludes zero.
 - **Caveat stated up front:** many sponsors renew year to year, so 2025 labels overlap with 2026. This is a replication on a second season, not a fully independent sample.
 - The LLM lists are the same cached responses used for 2026 (the prompt doesn't depend on season).
+
+## 3. Family theme nights (Oct 24 2026, written before any theme subject is extracted, resolved or scored)
+
+**Question:** do theme nights draw more fans in towns whose taste runs toward the night's subject? If they do, Qloo can pick family theme nights a club's own town will turn out for, where an assistant would suggest the same few franchises everywhere (124 of the 150 clubs ran a Star Wars promotion in 2026).
+
+- **Games:** the regular-season games of section 1 (2025 and 2026, final, attendance of 100 or more, no doubleheaders), MLB and the affiliated minor leagues, that carry a "Theme Days" promotion.
+- **Subject of each theme.** For each distinct theme name, Claude Haiku 5.5 (a fixed prompt in `analysis/theme-subjects.mts`) names the pop-culture subject the night is built on: a film, TV show, franchise, character, music artist or game. It answers none for nights built on something else (appreciation and heritage nights, faith and family nights, drink specials, dogs, kids running the bases), and says whether the subject suits all ages.
+- **Resolved in Qloo** with `/search`: the first result that is a brand, film, TV show, artist or video game.
+- **Family-safe only.** A subject counts if the model says it suits all ages, it isn't about alcohol, gambling or tobacco, and, for a film, Qloo's content rating isn't R or NC-17.
+- **Subjects kept:** those with theme nights at three or more different clubs, so each can be compared across towns.
+- **Outcome:** the game's residual from the section 1 model, fitted per tier on 2025 and 2026 together with every promotion flag: log attendance minus the fitted value. Positive means the night drew more than the model expects for a theme night at that club on that date.
+- **Scores for each game's subject in its club's town (the arms):**
+  1. **Qloo local taste.** The subject's affinity from `/v2/insights` with `signal.location.query` set to the club's market (the location the sponsor board uses) and `filter.results.entities` listing the kept subjects of that type, minus the subject's mean affinity across all club markets where Qloo returns it. A pair Qloo doesn't return is left out.
+  2. **Assistant.** Claude Haiku 5.5 rates from 0 to 10 how strongly families in the club's town would turn out for a night built on the subject, compared with a typical town with a ballclub (a fixed prompt, no tools or data).
+  3. **Placebo.** The Qloo local score of the same subject in another club's market, from a fixed random pairing of clubs (seed 21).
+- **Analysis.** The residual and each score are demeaned within subject, so a subject is only ever compared with itself across towns and national popularity drops out. Then the Spearman correlation of the demeaned residual with each demeaned score, over all kept games, with a 95% interval from 2,000 bootstrap resamples of clubs. Paired bootstrap differences: Qloo minus placebo, Qloo minus assistant.
+- **Success:** Qloo's correlation is above zero with an interval that excludes zero, and above the placebo's. Qloo against the assistant is reported either way.
+- **Product rule, fixed now.** Matchday suggests family theme nights for each club from Qloo local taste either way. If the test succeeds, the page says the ranking was tested and how; if it doesn't, the page says the ranking is untested and shows the result.
+- **Does not establish:** clubs choose their own themes, and may already pick ones their town likes, so this is association, not a controlled test. A night's draw also reflects its giveaway, marketing and the opponent. The number of games per subject may be small, so a null result is possible and will be reported as such.
