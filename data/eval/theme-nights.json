@@ -1,0 +1,105 @@
+{
+ "plan": "docs/eval-plan.md section 3",
+ "theme_games_with_kept_subject": 354,
+ "subjects": 26,
+ "clubs": 84,
+ "games_by_tier": {
+  "MiLB": 251,
+  "MLB": 103
+ },
+ "top_subjects": {
+  "Star Wars": 90,
+  "Harry Potter": 51,
+  "Bluey": 33,
+  "Grateful Dead": 17,
+  "Peanuts": 17,
+  "Hello Kitty": 16,
+  "Barbie": 13,
+  "Marvel": 12,
+  "Toy Story": 11,
+  "Sesame Street": 10,
+  "PAW Patrol": 10,
+  "Backyard Baseball": 10,
+  "Jurassic Park": 8,
+  "Superman": 6,
+  "Naruto": 6
+ },
+ "spearman_demeaned_residual_vs_score": {
+  "qloo": {
+   "mean": 0.027,
+   "ci95": [
+    -0.157,
+    0.213
+   ],
+   "n": 144
+  },
+  "placebo": {
+   "mean": -0.174,
+   "ci95": [
+    -0.318,
+    -0.02
+   ],
+   "n": 154
+  },
+  "assistant": {
+   "mean": -0.051,
+   "ci95": [
+    -0.175,
+    0.08
+   ],
+   "n": 353
+  },
+  "heatmap": {
+   "mean": 0.077,
+   "ci95": [
+    -0.058,
+    0.216
+   ],
+   "n": 325
+  },
+  "heatmap_placebo": {
+   "mean": -0.155,
+   "ci95": [
+    -0.274,
+    -0.041
+   ],
+   "n": 329
+  }
+ },
+ "qloo_minus_placebo": {
+  "mean": 0.295,
+  "ci95": [
+   0.019,
+   0.545
+  ],
+  "n": 124
+ },
+ "qloo_minus_assistant": {
+  "mean": 0.022,
+  "ci95": [
+   -0.169,
+   0.215
+  ],
+  "n": 144
+ },
+ "amendment_heatmap": {
+  "heatmap_minus_placebo": {
+   "mean": 0.219,
+   "ci95": [
+    0.054,
+    0.374
+   ],
+   "n": 316
+  },
+  "heatmap_minus_assistant": {
+   "mean": 0.113,
+   "ci95": [
+    -0.063,
+    0.305
+   ],
+   "n": 325
+  },
+  "subjects_scored": 24
+ },
+ "arm1_subjects_scored": 10
+}
