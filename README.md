@@ -3,6 +3,7 @@
 A season-planning desk for the marketing and sponsorship staff of baseball clubs. Pick any of the 150 MLB and affiliated Minor League clubs, and the desk:
 
 - moves the club's fireworks, bobblehead and giveaway nights to the 2027 dates where measured attendance lift adds the most fans;
+- suggests family theme nights the club's own town is likely to love: films, shows and characters other clubs built nights on, ranked by how the area around the ballpark leans toward each in Qloo's taste data, never a drinking or gambling night;
 - deals a hand of sponsor prospects that the club's city and its fans rank high in [Qloo](https://qloo.com)'s taste graph, next to the local businesses an AI assistant can name;
 - maps family restaurants, cafes and bakeries around the ballpark that stay open through a night game (bars, pubs and breweries are left out);
 - answers questions and re-plans the season through an agent that uses the desk's own tools. The same tools work inside Claude as an MCP connector.
@@ -25,6 +26,15 @@ Ask the agent "Plan 10 fireworks nights with nothing in April" and it calls `pla
 1. **Lift model.** Every regular-season MLB and Minor League game of 2025 and 2026 (20,711 games) from the MLB Stats API. Log attendance is regressed on promotion flags with club-season, weekday, month, day/night, temperature and rain controls, with errors clustered by club (`analysis/lift.py`).
 2. **Planner.** Each 2027 home date gets a baseline crowd: the club's no-promotion average for that weekday, scaled by month. Each promotion goes where its measured lift adds the most fans, with Monday-to-Thursday lifts used midweek and a minimum gap between nights of one kind (3 days for fireworks, 5 for bobbleheads), in `src/lib/plan/season.ts`.
 3. **A fair comparison.** "Your 2026 way" places exactly the same nights on the weekdays the club used in 2026, so only the dates differ. 2027 start times aren't published yet, so a weekday the club mostly played in daylight in 2025–26 (usually Sunday) counts as a day game and gets no fireworks.
+
+### Family theme nights (Qloo)
+
+124 of the 150 clubs ran a Star Wars promotion in 2026. Theme nights mostly copy what works elsewhere, so the desk asks a different question: which of the subjects clubs build family nights on does *this* town lean toward more than other club towns?
+
+1. **Subjects clubs actually use.** Every 2025–26 "Theme Days" promotion name (2,523 of them) was read by Claude Haiku 5.5 for the pop-culture subject it is built on, and whether that subject suits all ages (`analysis/theme-subjects.mts`). Subjects are resolved in Qloo with `/search`. Kept: family-safe subjects with nights at three or more clubs, such as Star Wars, Bluey, Harry Potter, Toy Story, Sesame Street and PAW Patrol.
+2. **How each town leans.** One national Qloo heatmap per subject (`filter.type=urn:heatmap`, the subject as `signal.interests.entities`), then the popularity-weighted mean affinity of the cells within 60 km of each ballpark (`analysis/theme-heatmaps.mts`). Each club's ideas are the subjects its area out-ranks most other club towns for, placed on the plan's theme nights, family days first.
+3. **Family-safe only.** Nothing about drinking, gambling, tobacco or cannabis, no film rated R, and the desk leaves out a few acts tied to drug culture. Community nights (faith and family, military, first responders, teachers, heritage) stay the club's own choice: the desk doesn't rank them by taste.
+4. **Any idea, live.** The agent's `check_theme_night` asks Qloo for one heatmap of whatever subject someone names, and says how the town compares with every club town.
 
 ### Sponsor board (Qloo)
 
@@ -49,6 +59,8 @@ The Desk ranking fuses the city and fan-base ranks by reciprocal rank and boosts
 |---|---|
 | `find_clubs` | Find any of the 150 clubs by name or city |
 | `plan_season` | Re-plan a club's 2027 nights: change counts, skip months |
+| `family_themes` | Family theme night ideas the club's town ranks high for, with dates from the plan |
+| `check_theme_night` | Asks Qloo live how the club's town leans toward any family theme, against every club town |
 | `sponsor_board` | Both sponsor lists with their Qloo evidence, filtered by category |
 | `nearby_partners` | Family food places near the park, open on a given game night |
 | `get_evidence` | The test results below and their limits |
@@ -57,7 +69,7 @@ The same registry is served at `/api/mcp` over streamable HTTP (stateless, no si
 
 ## Evidence
 
-Both tests were written down and committed before they ran ([docs/eval-plan.md](docs/eval-plan.md)), and the results are reported as they came out, including the one that went against the product. The live [Evidence page](https://companion-phi-nine.vercel.app/proof) shows the same numbers.
+All three tests were written down and committed before they ran ([docs/eval-plan.md](docs/eval-plan.md)), and the results are reported as they came out, including the one that went against the product. The live [Evidence page](https://companion-phi-nine.vercel.app/proof) shows the same numbers.
 
 **What promotions do to attendance** (95% intervals):
 
@@ -85,6 +97,19 @@ Fitted on 2025 and checked on 2026, 11 of the 12 promotion estimates stayed insi
 
 - **The pre-registered test failed.** The Desk ranking found 112 fewer 2026 sponsors than the assistant alone (range −158 to −66). It beat the placebo by 105 (82 to 131), so the taste signal is real, but most real sponsors are local banks, hospitals and dealers that an assistant can name and Qloo doesn't cover.
 - **The two find different sponsors,** so a hybrid was written down first and tested on a different season. It found 29 more 2025 sponsors than the assistant alone at the same list length (12 to 48). That is why the board shows both lists.
+
+**Do towns turn out for themes they love?** 354 theme nights in 2025–26 were built on 26 family-safe subjects that three or more clubs used. Each night's crowd is measured against what the attendance model expects for a theme night at that club on that date. It is then compared only with nights on the same subject elsewhere, so national popularity drops out. Spearman correlation, 95% intervals from 2,000 bootstrap resamples of clubs:
+
+| Town score | Correlation with the crowd | Nights |
+|---|---|---|
+| Qloo: how the area around the ballpark leans toward the subject (heatmap) | +0.08 (−0.06 to 0.22) | 325 |
+| Qloo: the town's taste (location insights; covers 10 of the 26 subjects) | +0.03 (−0.16 to 0.21) | 144 |
+| Assistant only (Claude Haiku 5.5) | −0.05 (−0.18 to 0.08) | 353 |
+| Placebo: another club's area | −0.16 (−0.27 to −0.04) | 329 |
+
+- **It didn't show.** How an area leans toward a subject didn't reliably predict which of its theme nights drew more. The Qloo heatmap score points the right way and is ahead of the assistant (+0.11, range −0.06 to 0.31), but neither interval excludes zero.
+- **Single nights are noisy:** even the placebo landed away from zero.
+- **So the desk calls the theme ranking untested** on every club page. It still lists the subjects each town leans toward, as ideas, which is what the rule written before the test said it would do.
 
 **What this does not establish:** lifts are observed associations (clubs choose when to run promotions), not experiments. Sponsor labels show who bought, not who should. Many sponsors renew every year, so 2025 overlaps 2026. The assistant may remember published sponsor deals from its training data, which favours it in both tests.
 
